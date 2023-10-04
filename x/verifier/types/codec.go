@@ -9,12 +9,16 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgAggregateCodeHashPrevote{}, "verifier/AggregateCodeHashPrevote", nil)
+	cdc.RegisterConcrete(&MsgApplyVerifyApplication{}, "verifier/ApplyVerifyApplication", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgAggregateCodeHashPrevote{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgApplyVerifyApplication{},
 	)
 	// this line is used by starport scaffolding # 3
 

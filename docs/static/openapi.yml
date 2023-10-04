@@ -75214,6 +75214,12 @@ definitions:
       the connection handshake.
   verifier.verifier.MsgAggregateCodeHashPrevoteResponse:
     type: object
+  verifier.verifier.MsgApplyVerifyApplicationResponse:
+    type: object
+    properties:
+      applicationId:
+        type: string
+        format: uint64
   verifier.verifier.Params:
     type: object
     description: Params defines the parameters for the module.
