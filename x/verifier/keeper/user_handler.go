@@ -1,44 +1,113 @@
 package keeper
 
 import (
+	"encoding/binary"
 	"verifier/x/verifier/types"
 
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k Keeper) handleResponseBlock(ctx sdk.Context, msg *types.MsgVerifyContract) uint64 {
+func (k Keeper) handleResponseBlock(ctx sdk.Context, msg *types.MsgApplyVerifyApplication) uint64 {
 
 	// compilationBlocks := k.GetTotalVerificationBlocks(ctx)
-	totalReqBlocks := k.GetTotalVerificationBlocks(ctx)
+	totalVerificationBlocksReq := k.GetTotalVerificationBlocks(ctx)
 
-	validationBlock := uint64(0)
+	finalverificationBlockHeight := uint64(0)
+
 	// total contract links uploaded so far, id
-	currTotalContract := k.GetContractCount(ctx)
+	TotalContract := k.GetContractCount(ctx)
 
-	var lastPendingContract types.PendingContracts
+	var lastPendingContract types.ContractInfo
 	var found bool = false
-	if currTotalContract != 0 {
-		lastPendingContract, found = k.GetPendingContracts(ctx, currTotalContract)
+	if TotalContract != 0 {
+		lastPendingContract, found = k.GetPendingContracts(ctx, TotalContract)
 	}
 
 	// Pending contract coun has been increased in Appendpendingcontract function
 	// totalPending := k.GetPendingContractsCount(ctx)
 	// k.SetPendingContractsCount(ctx, totalPending+1)
 
-	if !found || (uint64(ctx.BlockHeight()) > lastPendingContract.GetValidationBlock()) {
-		validationBlock = uint64(ctx.BlockHeight()) + compilationBlocks
+	if !found || (uint64(ctx.BlockHeight()) > lastPendingContract.GetAssignedVerificationBlockHeight()) {
+		finalverificationBlockHeight = uint64(ctx.BlockHeight()) + totalVerificationBlocksReq
 	} else {
-		validationBlock = lastPendingContract.GetValidationBlock() + compilationBlocks
+		finalverificationBlockHeight = lastPendingContract.GetAssignedVerificationBlockHeight() + totalVerificationBlocksReq
 	}
 
-	pendingContract := types.PendingContracts{
+	ContractInfo := types.ContractInfo{
 		// code id 0 means codeId is not provided yet
-		CodeId:          0,
-		ContractURL:     msg.ContractURL,
-		ValidationBlock: validationBlock,
-		ContractURLHash: "",
+		CodeId:                          0,
+		OffchainCodeUrl:                 msg.OffchainCodeUrl,
+		AssignedVerificationBlockHeight: finalverificationBlockHeight,
+		OffchainCodeHash:                "",
 	}
 	id := k.AppendPendingContracts(ctx, pendingContract)
 
 	return id
+}
+
+// SetPendingContracts set a specific pendingContracts in the store
+// SetPendingContracts set a specific pendingContracts in the store
+func (k Keeper) SetPendingContracts(ctx sdk.Context, pendingContracts types.PendingContracts) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PendingContractsKey))
+	b := k.cdc.MustMarshal(&pendingContracts)
+	store.Set(GetPendingContractsIDBytes(pendingContracts.Id), b)
+}
+
+// GetPendingContracts returns a pendingContracts from its id
+func (k Keeper) GetPendingContracts(ctx sdk.Context, id uint64) (val types.PendingContracts, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PendingContractsKey))
+	b := store.Get(GetPendingContractsIDBytes(id))
+	if b == nil {
+		return val, false
+	}
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// GetPendingContractsCount get the total number of pendingContracts
+func (k Keeper) GetPendingContractsCount(ctx sdk.Context) uint64 {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+	byteKey := types.KeyPrefix(types.PendingContractsCountKey)
+	bz := store.Get(byteKey)
+
+	// Count doesn't exist: no element
+	if bz == nil {
+		return 0
+	}
+
+	// Parse bytes
+	return binary.BigEndian.Uint64(bz)
+}
+
+// SetPendingContractsCount set the total number of pendingContracts
+func (k Keeper) SetPendingContractsCount(ctx sdk.Context, count uint64) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+	byteKey := types.KeyPrefix(types.PendingContractsCountKey)
+	bz := make([]byte, 8)
+	binary.BigEndian.PutUint64(bz, count)
+	store.Set(byteKey, bz)
+}
+
+// AppendPendingContracts appends a pendingContracts in the store with a new id and update the count
+func (k Keeper) AppendPendingContracts(
+	ctx sdk.Context,
+	pendingContracts types.ContractInfo,
+) uint64 {
+	// Create the pendingContracts
+	count := k.GetContractCount(ctx)
+	pendingCount := k.GetPendingContractsCount(ctx)
+
+	// Set the ID of the appended value
+	pendingContracts.Id = count + 1
+
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PendingContractsKey))
+	appendedValue := k.cdc.MustMarshal(&pendingContracts)
+	store.Set(GetPendingContractsIDBytes(pendingContracts.Id), appendedValue)
+
+	// Update pendingContracts count
+	k.SetPendingContractsCount(ctx, pendingCount+1)
+	k.SetContractCount(ctx, count+1)
+
+	return count
 }
