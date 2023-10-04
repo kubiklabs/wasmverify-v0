@@ -1,7 +1,18 @@
 syntax = "proto3";
+
 package verifier.verifier;
 
 option go_package = "verifier/x/verifier/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc AggregateCodeHashPrevote (MsgAggregateCodeHashPrevote) returns (MsgAggregateCodeHashPrevoteResponse);
+}
+message MsgAggregateCodeHashPrevote {
+  string creator   = 1;
+  string hash      = 2;
+  string validator = 3;
+}
+
+message MsgAggregateCodeHashPrevoteResponse {}
+
