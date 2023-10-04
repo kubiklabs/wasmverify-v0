@@ -11,9 +11,9 @@ import (
 func (k msgServer) ApplyVerifyApplication(goCtx context.Context, msg *types.MsgApplyVerifyApplication) (*types.MsgApplyVerifyApplicationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	validationId := k.handleResponseBlock(ctx, msg)
+	id := k.handleApplication(ctx, msg)
 
 	return &types.MsgApplyVerifyApplicationResponse{
-		ApplicationId: validationId,
+		ApplicationId: id,
 	}, nil
 }

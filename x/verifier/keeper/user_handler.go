@@ -8,7 +8,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k Keeper) handleResponseBlock(ctx sdk.Context, msg *types.MsgApplyVerifyApplication) uint64 {
+func (k Keeper) handleApplication(ctx sdk.Context, msg *types.MsgApplyVerifyApplication) uint64 {
 
 	// compilationBlocks := k.GetTotalVerificationBlocks(ctx)
 	totalVerificationBlocksReq := k.GetTotalVerificationBlocks(ctx)
@@ -41,21 +41,21 @@ func (k Keeper) handleResponseBlock(ctx sdk.Context, msg *types.MsgApplyVerifyAp
 		AssignedVerificationBlockHeight: finalverificationBlockHeight,
 		OffchainCodeHash:                "",
 	}
-	id := k.AppendPendingContracts(ctx, pendingContract)
+	id := k.AppendPendingContracts(ctx, ContractInfo)
 
 	return id
 }
 
 // SetPendingContracts set a specific pendingContracts in the store
 // SetPendingContracts set a specific pendingContracts in the store
-func (k Keeper) SetPendingContracts(ctx sdk.Context, pendingContracts types.PendingContracts) {
+func (k Keeper) SetPendingContracts(ctx sdk.Context, pendingContracts types.ContractInfo) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PendingContractsKey))
 	b := k.cdc.MustMarshal(&pendingContracts)
 	store.Set(GetPendingContractsIDBytes(pendingContracts.Id), b)
 }
 
 // GetPendingContracts returns a pendingContracts from its id
-func (k Keeper) GetPendingContracts(ctx sdk.Context, id uint64) (val types.PendingContracts, found bool) {
+func (k Keeper) GetPendingContracts(ctx sdk.Context, id uint64) (val types.ContractInfo, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PendingContractsKey))
 	b := store.Get(GetPendingContractsIDBytes(id))
 	if b == nil {
@@ -109,5 +109,17 @@ func (k Keeper) AppendPendingContracts(
 	k.SetPendingContractsCount(ctx, pendingCount+1)
 	k.SetContractCount(ctx, count+1)
 
-	return count
+	return count + 1
+}
+
+// GetPendingContractsIDBytes returns the byte representation of the ID
+func GetPendingContractsIDBytes(id uint64) []byte {
+	bz := make([]byte, 8)
+	binary.BigEndian.PutUint64(bz, id)
+	return bz
+}
+
+// GetPendingContractsIDFromBytes returns ID in uint64 format from a byte array
+func GetPendingContractsIDFromBytes(bz []byte) uint64 {
+	return binary.BigEndian.Uint64(bz)
 }
