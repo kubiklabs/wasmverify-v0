@@ -8,6 +8,7 @@ option go_package = "verifier/x/verifier/types";
 service Msg {
   rpc AggregateCodeHashPrevote (MsgAggregateCodeHashPrevote) returns (MsgAggregateCodeHashPrevoteResponse);
   rpc ApplyVerifyApplication   (MsgApplyVerifyApplication  ) returns (MsgApplyVerifyApplicationResponse  );
+  rpc UpdateBlockTime          (MsgUpdateBlockTime         ) returns (MsgUpdateBlockTimeResponse         );
 }
 message MsgAggregateCodeHashPrevote {
   string creator   = 1;
@@ -25,4 +26,13 @@ message MsgApplyVerifyApplication {
 message MsgApplyVerifyApplicationResponse {
   uint64 applicationId = 1;
 }
+
+message MsgUpdateBlockTime {
+  string creator           = 1;
+  uint64 compilationBlocks = 2;
+  uint64 prevoteBlocks     = 3;
+  uint64 voteBlocks        = 4;
+}
+
+message MsgUpdateBlockTimeResponse {}
 

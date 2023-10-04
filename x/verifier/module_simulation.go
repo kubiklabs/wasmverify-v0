@@ -31,6 +31,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgApplyVerifyApplication int = 100
 
+	opWeightMsgUpdateBlockTime = "op_weight_msg_update_block_time"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateBlockTime int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -81,6 +85,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		verifiersimulation.SimulateMsgApplyVerifyApplication(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgUpdateBlockTime int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateBlockTime, &weightMsgUpdateBlockTime, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateBlockTime = defaultWeightMsgUpdateBlockTime
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateBlockTime,
+		verifiersimulation.SimulateMsgUpdateBlockTime(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -102,6 +117,14 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgApplyVerifyApplication,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				verifiersimulation.SimulateMsgApplyVerifyApplication(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgUpdateBlockTime,
+			defaultWeightMsgUpdateBlockTime,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				verifiersimulation.SimulateMsgUpdateBlockTime(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),

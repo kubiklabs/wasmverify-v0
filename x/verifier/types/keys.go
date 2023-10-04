@@ -14,9 +14,11 @@ const (
 	MemStoreKey = "mem_verifier"
 
 	// total number of verified contracts till now
-	ContractCountKey           = "ContractCountKey"
-	ContractCompilationTimeKey = "ContractCompilationTime"
-	OngoingValidationIdKey     = "OngoinBlockBlockId"
+	ContractCountKey                = "ContractCountKey"
+	ContractCompilationBlockTimeKey = "ContractCompilationBlockTime"
+	PrevoteBlockTimeKey             = "PrevoteBlockTimeKey"
+	VoteBlockTimeKey                = "VoteBlockTimeKey"
+	OngoingValidationIdKey          = "OngoingBlockBlockId"
 )
 
 func KeyPrefix(p string) []byte {

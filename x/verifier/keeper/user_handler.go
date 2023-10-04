@@ -7,7 +7,9 @@ import (
 )
 
 func (k Keeper) handleResponseBlock(ctx sdk.Context, msg *types.MsgVerifyContract) uint64 {
-	compilationBlocks := k.GetRunTimeBlocks(ctx)
+
+	// compilationBlocks := k.GetTotalVerificationBlocks(ctx)
+	totalReqBlocks := k.GetTotalVerificationBlocks(ctx)
 
 	validationBlock := uint64(0)
 	// total contract links uploaded so far, id

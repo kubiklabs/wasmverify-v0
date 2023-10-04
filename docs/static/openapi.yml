@@ -75220,6 +75220,8 @@ definitions:
       applicationId:
         type: string
         format: uint64
+  verifier.verifier.MsgUpdateBlockTimeResponse:
+    type: object
   verifier.verifier.Params:
     type: object
     description: Params defines the parameters for the module.
