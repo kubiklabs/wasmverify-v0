@@ -1,0 +1,7 @@
+syntax = "proto3";
+package verifier.verifier;
+
+option go_package = "verifier/x/verifier/types";
+
+// Msg defines the Msg service.
+service Msg {}

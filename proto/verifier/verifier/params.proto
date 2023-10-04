@@ -1,0 +1,12 @@
+syntax = "proto3";
+package verifier.verifier;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "verifier/x/verifier/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}
