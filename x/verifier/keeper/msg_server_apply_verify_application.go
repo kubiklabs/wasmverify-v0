@@ -3,15 +3,17 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"verifier/x/verifier/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k msgServer) ApplyVerifyApplication(goCtx context.Context, msg *types.MsgApplyVerifyApplication) (*types.MsgApplyVerifyApplicationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	validationId := k.handleResponseBlock(ctx, msg)
 
-	return &types.MsgApplyVerifyApplicationResponse{}, nil
+	return &types.MsgApplyVerifyApplicationResponse{
+		ApplicationId: validationId,
+	}, nil
 }

@@ -12,8 +12,18 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_verifier"
+
+	// total number of verified contracts till now
+	ContractCountKey           = "ContractCountKey"
+	ContractCompilationTimeKey = "ContractCompilationTime"
+	OngoingValidationIdKey     = "OngoinBlockBlockId"
 )
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+const (
+	PendingContractsKey      = "PendingContracts/value/"
+	PendingContractsCountKey = "PendingContracts/count/"
+)
