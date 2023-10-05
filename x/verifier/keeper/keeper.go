@@ -9,6 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/address"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
@@ -66,15 +67,15 @@ func (k Keeper) ValidateValidator(ctx sdk.Context, vAddr sdk.ValAddress) error {
 func (k Keeper) GetAggregateCodeHashPrevote(
 	ctx sdk.Context,
 	voter sdk.ValAddress,
-) (types.AggregateCodeHashPrevote, error) {
+) (types.CodeHashPreVote, error) {
 	store := ctx.KVStore(k.storeKey)
 
-	bz := store.Get(types.KeyAggregateExchangeRatePrevote(voter))
+	bz := store.Get(ConcatBytes(0, types.KeyPrefixAggregateCodeHashPrevote, address.MustLengthPrefix(voter)))
 	if bz == nil {
-		return types.AggregateExchangeRatePrevote{}, types.ErrNoAggregatePrevote.Wrap(voter.String())
+		return types.CodeHashPreVote{}, types.ErrNoAggregatePrevote.Wrap(voter.String())
 	}
 
-	var aggregatePrevote types.AggregateExchangeRatePrevote
+	var aggregatePrevote types.CodeHashPreVote
 	k.cdc.MustUnmarshal(bz, &aggregatePrevote)
 
 	return aggregatePrevote, nil
@@ -86,42 +87,58 @@ func (k Keeper) HasAggregateCodeHashPrevote(
 	voter sdk.ValAddress,
 ) bool {
 	store := ctx.KVStore(k.storeKey)
-	return store.Has(types.KeyAggregateExchangeRatePrevote(voter))
+	return store.Has(ConcatBytes(0, types.KeyPrefixAggregateCodeHashPrevote, address.MustLengthPrefix(voter)))
 }
 
 // SetAggregateExchangeRatePrevote set an oracle aggregate prevote to the store.
 func (k Keeper) SetAggregateCodeHashPrevote(
 	ctx sdk.Context,
 	voter sdk.ValAddress,
-	prevote types.AggregateExchangeRatePrevote,
+	prevote types.CodeHashPreVote,
 ) {
 	store := ctx.KVStore(k.storeKey)
 	bz := k.cdc.MustMarshal(&prevote)
-	store.Set(types.KeyAggregateExchangeRatePrevote(voter), bz)
+	store.Set(ConcatBytes(0, types.KeyPrefixAggregateCodeHashPrevote, address.MustLengthPrefix(voter)), bz)
 }
 
 // DeleteAggregateExchangeRatePrevote deletes an oracle prevote from the store.
 func (k Keeper) DeleteAggregateExchangeRatePrevote(ctx sdk.Context, voter sdk.ValAddress) {
 	store := ctx.KVStore(k.storeKey)
-	store.Delete(types.KeyAggregateExchangeRatePrevote(voter))
+	store.Delete(ConcatBytes(0, types.KeyPrefixAggregateCodeHashPrevote, address.MustLengthPrefix(voter)))
 }
 
 // IterateAggregateExchangeRatePrevotes iterates rate over prevotes in the store
 func (k Keeper) IterateAggregateCodeHashPrevotes(
 	ctx sdk.Context,
-	handler func(sdk.ValAddress, types.AggregateExchangeRatePrevote) bool,
+	handler func(sdk.ValAddress, types.CodeHashPreVote) bool,
 ) {
 	store := ctx.KVStore(k.storeKey)
-	iter := sdk.KVStorePrefixIterator(store, types.KeyPrefixAggregateExchangeRatePrevote)
+	iter := sdk.KVStorePrefixIterator(store, types.KeyPrefixAggregateCodeHashPrevote)
 	defer iter.Close()
 
 	for ; iter.Valid(); iter.Next() {
 		voterAddr := sdk.ValAddress(iter.Key()[2:])
-		var aggregatePrevote types.AggregateExchangeRatePrevote
+		var aggregatePrevote types.CodeHashPreVote
 		k.cdc.MustUnmarshal(iter.Value(), &aggregatePrevote)
 
 		if handler(voterAddr, aggregatePrevote) {
 			break
 		}
 	}
+}
+
+// ConcatBytes creates a new slice by merging list of bytes and leaving empty amount of margin
+// bytes at the end
+func ConcatBytes(margin int, bzs ...[]byte) []byte {
+	l := 0
+	for _, bz := range bzs {
+		l += len(bz)
+	}
+	out := make([]byte, l+margin)
+	offset := 0
+	for _, bz := range bzs {
+		copy(out[offset:], bz)
+		offset += len(bz)
+	}
+	return out
 }

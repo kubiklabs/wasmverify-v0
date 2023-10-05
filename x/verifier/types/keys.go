@@ -21,6 +21,11 @@ const (
 	OngoingValidationIdKey          = "OngoingBlockBlockId"
 )
 
+var (
+	KeyPrefixAggregateCodeHashPrevote = []byte{1} // prefix for each key to a aggregate prevote
+	KeyPrefixAggregateCodeHashVote    = []byte{2} // prefix for each key to a aggregate vote
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }

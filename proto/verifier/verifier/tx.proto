@@ -4,6 +4,9 @@ package verifier.verifier;
 
 option go_package = "verifier/x/verifier/types";
 
+// SEND PREVOTE HASH IN THIS FORMATE 
+// SHA256("{salt}:{codehash}:{voterAddress}")
+
 // Msg defines the Msg service.
 service Msg {
   rpc AggregateCodeHashPrevote (MsgAggregateCodeHashPrevote) returns (MsgAggregateCodeHashPrevoteResponse);

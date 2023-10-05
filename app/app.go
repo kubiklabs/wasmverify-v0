@@ -113,6 +113,7 @@ import (
 	verifiermodule "verifier/x/verifier"
 	verifiermodulekeeper "verifier/x/verifier/keeper"
 	verifiermoduletypes "verifier/x/verifier/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "verifier/app/params"
@@ -524,6 +525,7 @@ func New(
 		keys[verifiermoduletypes.StoreKey],
 		keys[verifiermoduletypes.MemStoreKey],
 		app.GetSubspace(verifiermoduletypes.ModuleName),
+		app.StakingKeeper,
 	)
 	verifierModule := verifiermodule.NewAppModule(appCodec, app.VerifierKeeper, app.AccountKeeper, app.BankKeeper)
 

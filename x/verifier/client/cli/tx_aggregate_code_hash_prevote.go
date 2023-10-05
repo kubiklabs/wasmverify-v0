@@ -3,23 +3,23 @@ package cli
 import (
 	"strconv"
 
+	"verifier/x/verifier/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"verifier/x/verifier/types"
 )
 
 var _ = strconv.Itoa(0)
 
 func CmdAggregateCodeHashPrevote() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "aggregate-code-hash-prevote [hash] [validator]",
+		Use:   "aggregate-code-hash-prevote [hash]",
 		Short: "Broadcast message AggregateCodeHashPrevote",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argHash := args[0]
-			argValidator := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -29,7 +29,6 @@ func CmdAggregateCodeHashPrevote() *cobra.Command {
 			msg := types.NewMsgAggregateCodeHashPrevote(
 				clientCtx.GetFromAddress().String(),
 				argHash,
-				argValidator,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
