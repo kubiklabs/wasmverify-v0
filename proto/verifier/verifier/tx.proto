@@ -13,7 +13,6 @@ service Msg {
 message MsgAggregateCodeHashPrevote {
   string creator   = 1;
   string hash      = 2;
-  string validator = 3;
 }
 
 message MsgAggregateCodeHashPrevoteResponse {}

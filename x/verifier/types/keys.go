@@ -26,6 +26,7 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	PendingContractsKey      = "PendingContracts/value/"
+	// PendingContractsKey      = "PendingContracts/value/"
+	ContractInfoKey          = "ContractInfo/value/"
 	PendingContractsCountKey = "PendingContracts/count/"
 )

@@ -1,26 +1,45 @@
 syntax = "proto3";
+
 package verifier.verifier;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "verifier/verifier/params.proto";
+import "verifier/verifier/contract_info.proto";
 
 option go_package = "verifier/x/verifier/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/verifier/verifier/params";
+  
+  }
+  
+  // Queries a list of ContractInfo items.
+  rpc ContractInfo (QueryContractInfoRequest) returns (QueryContractInfoResponse) {
+    option (google.api.http).get = "/verifier/verifier/contract_info/{id}";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryContractInfoRequest {
+  uint64 id = 1;
+}
+
+message QueryContractInfoResponse {
+  ContractInfo contractinfo = 1;
+}
+

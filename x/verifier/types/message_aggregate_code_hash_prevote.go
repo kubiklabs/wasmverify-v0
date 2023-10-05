@@ -11,9 +11,8 @@ var _ sdk.Msg = &MsgAggregateCodeHashPrevote{}
 
 func NewMsgAggregateCodeHashPrevote(creator string, hash string, validator string) *MsgAggregateCodeHashPrevote {
 	return &MsgAggregateCodeHashPrevote{
-		Creator:   creator,
-		Hash:      hash,
-		Validator: validator,
+		Creator: creator,
+		Hash:    hash,
 	}
 }
 

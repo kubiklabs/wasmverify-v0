@@ -18,20 +18,16 @@ func (k Keeper) handleApplication(ctx sdk.Context, msg *types.MsgApplyVerifyAppl
 	// total contract links uploaded so far, id
 	TotalContract := k.GetContractCount(ctx)
 
-	var lastPendingContract types.ContractInfo
+	var lastContractPending types.ContractInfo
 	var found bool = false
 	if TotalContract != 0 {
-		lastPendingContract, found = k.GetPendingContracts(ctx, TotalContract)
+		lastContractPending, found = k.GetContractInfo(ctx, TotalContract)
 	}
 
-	// Pending contract coun has been increased in Appendpendingcontract function
-	// totalPending := k.GetPendingContractsCount(ctx)
-	// k.SetPendingContractsCount(ctx, totalPending+1)
-
-	if !found || (uint64(ctx.BlockHeight()) > lastPendingContract.GetAssignedVerificationBlockHeight()) {
+	if !found || (uint64(ctx.BlockHeight()) > lastContractPending.GetAssignedVerificationBlockHeight()) {
 		finalverificationBlockHeight = uint64(ctx.BlockHeight()) + totalVerificationBlocksReq
 	} else {
-		finalverificationBlockHeight = lastPendingContract.GetAssignedVerificationBlockHeight() + totalVerificationBlocksReq
+		finalverificationBlockHeight = lastContractPending.GetAssignedVerificationBlockHeight() + totalVerificationBlocksReq
 	}
 
 	ContractInfo := types.ContractInfo{
@@ -47,16 +43,15 @@ func (k Keeper) handleApplication(ctx sdk.Context, msg *types.MsgApplyVerifyAppl
 }
 
 // SetPendingContracts set a specific pendingContracts in the store
-// SetPendingContracts set a specific pendingContracts in the store
-func (k Keeper) SetPendingContracts(ctx sdk.Context, pendingContracts types.ContractInfo) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PendingContractsKey))
+func (k Keeper) SetContractInfo(ctx sdk.Context, pendingContracts types.ContractInfo) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ContractInfoKey))
 	b := k.cdc.MustMarshal(&pendingContracts)
 	store.Set(GetPendingContractsIDBytes(pendingContracts.Id), b)
 }
 
 // GetPendingContracts returns a pendingContracts from its id
-func (k Keeper) GetPendingContracts(ctx sdk.Context, id uint64) (val types.ContractInfo, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PendingContractsKey))
+func (k Keeper) GetContractInfo(ctx sdk.Context, id uint64) (val types.ContractInfo, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ContractInfoKey))
 	b := store.Get(GetPendingContractsIDBytes(id))
 	if b == nil {
 		return val, false
@@ -101,7 +96,7 @@ func (k Keeper) AppendPendingContracts(
 	// Set the ID of the appended value
 	pendingContracts.Id = count + 1
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PendingContractsKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ContractInfoKey))
 	appendedValue := k.cdc.MustMarshal(&pendingContracts)
 	store.Set(GetPendingContractsIDBytes(pendingContracts.Id), appendedValue)
 
