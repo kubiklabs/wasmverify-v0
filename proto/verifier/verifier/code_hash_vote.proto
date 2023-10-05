@@ -1,0 +1,10 @@
+syntax = "proto3";
+package verifier.verifier;
+
+option go_package = "verifier/x/verifier/types";
+
+message CodeHashVote {
+  
+  string codeHash = 1; 
+  string voter = 2; 
+}
