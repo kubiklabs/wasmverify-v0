@@ -4,7 +4,7 @@ package verifier.verifier;
 
 option go_package = "verifier/x/verifier/types";
 
-// SEND PREVOTE HASH IN THIS FORMATE 
+// SEND PREVOTE HASH IN THIS FORMATE
 // SHA256("{salt}:{codehash}:{voterAddress}")
 
 // Msg defines the Msg service.
@@ -12,10 +12,11 @@ service Msg {
   rpc AggregateCodeHashPrevote (MsgAggregateCodeHashPrevote) returns (MsgAggregateCodeHashPrevoteResponse);
   rpc ApplyVerifyApplication   (MsgApplyVerifyApplication  ) returns (MsgApplyVerifyApplicationResponse  );
   rpc UpdateBlockTime          (MsgUpdateBlockTime         ) returns (MsgUpdateBlockTimeResponse         );
+  rpc AggregateCodeHashVote    (MsgAggregateCodeHashVote   ) returns (MsgAggregateCodeHashVoteResponse   );
 }
 message MsgAggregateCodeHashPrevote {
-  string creator   = 1;
-  string hash      = 2;
+  string creator = 1;
+  string hash    = 2;
 }
 
 message MsgAggregateCodeHashPrevoteResponse {}
@@ -37,4 +38,12 @@ message MsgUpdateBlockTime {
 }
 
 message MsgUpdateBlockTimeResponse {}
+
+message MsgAggregateCodeHashVote {
+  string creator  = 1;
+  string salt     = 2;
+  string codeHash = 3;
+}
+
+message MsgAggregateCodeHashVoteResponse {}
 

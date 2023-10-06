@@ -11,6 +11,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgAggregateCodeHashPrevote{}, "verifier/AggregateCodeHashPrevote", nil)
 	cdc.RegisterConcrete(&MsgApplyVerifyApplication{}, "verifier/ApplyVerifyApplication", nil)
 	cdc.RegisterConcrete(&MsgUpdateBlockTime{}, "verifier/UpdateBlockTime", nil)
+	cdc.RegisterConcrete(&MsgAggregateCodeHashVote{}, "verifier/AggregateCodeHashVote", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -23,6 +24,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateBlockTime{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAggregateCodeHashVote{},
 	)
 	// this line is used by starport scaffolding # 3
 

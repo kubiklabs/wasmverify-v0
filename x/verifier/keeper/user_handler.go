@@ -107,6 +107,44 @@ func (k Keeper) AppendPendingContracts(
 	return count + 1
 }
 
+// get final block verification time or the contract by its id
+func (k Keeper) GetContractFinalVerificationTime(
+	ctx sdk.Context,
+	id uint64,
+) (uint64, error) {
+	contractInfo, found := k.GetContractInfo(ctx, id)
+	if !found {
+		return 0, types.ErrContractInfoNotFound
+	}
+
+	return contractInfo.AssignedVerificationBlockHeight, nil
+}
+
+// Returns last block till validator can prevote for the contract
+func (k Keeper) GetContractPrevoteTime(
+	ctx sdk.Context,
+	id uint64,
+) (uint64, error) {
+	contractInfo, found := k.GetContractInfo(ctx, id)
+	if !found {
+		return 0, types.ErrContractInfoNotFound
+	}
+
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+	VoteBlockskey := types.KeyPrefix(types.VoteBlockTimeKey)
+
+	bz1 := store.Get(VoteBlockskey)
+
+	// Count doesn't exist: no element
+	if bz1 == nil {
+		return 0, types.ErrVoteBlockTimeNotFound
+	}
+
+	// Parse bytes
+	return (contractInfo.AssignedVerificationBlockHeight - binary.BigEndian.Uint64(bz1)), nil
+
+}
+
 // GetPendingContractsIDBytes returns the byte representation of the ID
 func GetPendingContractsIDBytes(id uint64) []byte {
 	bz := make([]byte, 8)

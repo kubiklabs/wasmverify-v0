@@ -33,6 +33,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdAggregateCodeHashPrevote())
 	cmd.AddCommand(CmdApplyVerifyApplication())
 	cmd.AddCommand(CmdUpdateBlockTime())
+	cmd.AddCommand(CmdAggregateCodeHashVote())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

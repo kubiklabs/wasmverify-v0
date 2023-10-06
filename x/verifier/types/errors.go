@@ -30,4 +30,7 @@ var (
 	ErrNoMedian                = errors.Register(ModuleName, 19, "no median for this denom at this block")
 	ErrNoMedianDeviation       = errors.Register(ModuleName, 20, "no median deviation for this denom at this block")
 	ErrMalformedLatestAvgPrice = errors.Register(ModuleName, 21, "malformed latest avg price, expecting one byte")
+	ErrContractInfoNotFound    = errors.Register(ModuleName, 22, "ContractInfo not found")
+	// This error we will get in GetPrevoteTime for findinng prevote time for any contract info
+	ErrVoteBlockTimeNotFound = errors.Register(ModuleName, 22, "Vote blocks not found")
 )

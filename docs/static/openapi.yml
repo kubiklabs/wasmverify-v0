@@ -75282,6 +75282,8 @@ definitions:
         type: string
   verifier.verifier.MsgAggregateCodeHashPrevoteResponse:
     type: object
+  verifier.verifier.MsgAggregateCodeHashVoteResponse:
+    type: object
   verifier.verifier.MsgApplyVerifyApplicationResponse:
     type: object
     properties:
