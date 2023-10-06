@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"strings"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto/tmhash"
 	"gopkg.in/yaml.v3"
 )
@@ -19,10 +18,9 @@ var _ yaml.Marshaler = AggregateVoteHash{}
 // SHA256("{salt}:{codehash}:{voterAddress}")
 type AggregateVoteHash []byte
 
-// GetAggregateVoteHash computes hash value of CodeHashVote to avoid
-// redundant DecCoins stringify operation.
-func GetAggregateVoteHash(salt, codeHash string, voter sdk.ValAddress) AggregateVoteHash {
-	sourceStr := strings.Join([]string{salt, codeHash, voter.String()}, ":")
+// GetAggregateVoteHash computes hash value of CodeHashVote
+func GetAggregateVoteHash(salt, codeHash string, voter string) AggregateVoteHash {
+	sourceStr := strings.Join([]string{salt, codeHash, voter}, ":")
 	return tmhash.SumTruncated([]byte(sourceStr))
 }
 

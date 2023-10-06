@@ -9,10 +9,11 @@ const TypeMsgAggregateCodeHashPrevote = "aggregate_code_hash_prevote"
 
 var _ sdk.Msg = &MsgAggregateCodeHashPrevote{}
 
-func NewMsgAggregateCodeHashPrevote(creator string, hash string) *MsgAggregateCodeHashPrevote {
+func NewMsgAggregateCodeHashPrevote(applicationId uint64, creator string, hash string) *MsgAggregateCodeHashPrevote {
 	return &MsgAggregateCodeHashPrevote{
-		Creator: creator,
-		Hash:    hash,
+		ApplicationId: applicationId,
+		Creator:       creator,
+		Hash:          hash,
 	}
 }
 

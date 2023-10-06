@@ -41,9 +41,10 @@ message MsgUpdateBlockTime {
 message MsgUpdateBlockTimeResponse {}
 
 message MsgAggregateCodeHashVote {
-  string creator  = 1;
-  string salt     = 2;
-  string codeHash = 3;
+  uint64 ApplicationId = 1;
+  string creator       = 2;
+  string salt          = 3;
+  string codeHash      = 4;
 }
 
 message MsgAggregateCodeHashVoteResponse {}

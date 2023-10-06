@@ -22,40 +22,46 @@ func (k msgServer) AggregateCodeHashVote(goCtx context.Context, msg *types.MsgAg
 		return nil, err
 	}
 
-	params := ms.GetParams(ctx)
-	aggregatePrevote, err := ms.GetAggregateExchangeRatePrevote(ctx, valAddr)
-	if err != nil {
-		return nil, types.ErrNoAggregatePrevote.Wrap(msg.Validator)
+	// check vote time for the validator
+	contractInfo, found := k.GetContractInfo(ctx, msg.ApplicationId)
+
+	if !found {
+		return nil, types.ErrContractInfoNotFound
 	}
 
-	// Check the vote is submitted in the `period == prevote.period+1`
-	if (uint64(ctx.BlockHeight()) / params.VotePeriod) != (aggregatePrevote.SubmitBlock/params.VotePeriod)+1 {
-		return nil, types.ErrRevealPeriodMissMatch
+	if uint64(ctx.BlockHeight()) > contractInfo.AssignedVerificationBlockHeight {
+		return nil, types.ErrVoteTimePassed
 	}
 
-	exchangeRateTuples, err := types.ParseExchangeRateTuples(msg.ExchangeRates)
+	aggregatePrevote, err := k.GetAggregateCodeHashPrevote(ctx, valAddr)
 	if err != nil {
-		return nil, err
+		return nil, types.ErrNoAggregatePrevote.Wrap((msg.Creator + " for appId: " + string(msg.ApplicationId)))
 	}
+
+	// exchangeRateTuples, err := types.ParseExchangeRateTuples(msg.ExchangeRates)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	// Verify that the vote hash and prevote hash match
-	hash := types.GetAggregateVoteHash(msg.Salt, msg.ExchangeRates, valAddr)
+	hash := types.GetAggregateVoteHash(msg.Salt, msg.CodeHash, msg.Creator)
 	if aggregatePrevote.Hash != hash.String() {
 		return nil, types.ErrVerificationFailed.Wrapf("must be given %s not %s", aggregatePrevote.Hash, hash)
 	}
 
-	// Filter out rates which aren't included in the AcceptList
-	// This is also needed for slashing; in the end blocker we are checking if validator voted
-	// for all required currencies. If they missed some, then we increase their slashing counter.
-	filteredTuples := types.ExchangeRateTuples{}
-	for _, tuple := range exchangeRateTuples {
-		if params.AcceptList.Contains(tuple.Denom) {
-			filteredTuples = append(filteredTuples, tuple)
-		}
-	}
+	// // Filter out rates which aren't included in the AcceptList
+	// // This is also needed for slashing; in the end blocker we are checking if validator voted
+	// // for all required currencies. If they missed some, then we increase their slashing counter.
+	// filteredTuples := types.ExchangeRateTuples{}
+	// for _, tuple := range exchangeRateTuples {
+	// 	if params.AcceptList.Contains(tuple.Denom) {
+	// 		filteredTuples = append(filteredTuples, tuple)
+	// 	}
+	// }
 
-	// Move aggregate prevote to aggregate vote with given exchange rates
-	ms.SetAggregateExchangeRateVote(ctx, valAddr, types.NewAggregateExchangeRateVote(filteredTuples, valAddr))
+	// Move aggregate prevote to aggregate vote with given CodeHash
+	aggregateCodeHashVote := types.CodeHashVote{}
+	ms.SetAggregateExchangeRateVote(ctx, valAddr, types.NewAggregateCodeHashVote(filteredTuples, valAddr))
 	ms.DeleteAggregateExchangeRatePrevote(ctx, valAddr)
 
 	return &types.MsgAggregateCodeHashVoteResponse{}, nil

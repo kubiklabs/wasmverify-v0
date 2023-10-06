@@ -4,7 +4,7 @@ package verifier.verifier;
 option go_package = "verifier/x/verifier/types";
 
 message CodeHashVote {
-  
-  string codeHash = 1; 
-  string voter = 2; 
+  uint64 applicationId = 1;
+  string codeHash      = 2; 
+  string voter         = 3; 
 }

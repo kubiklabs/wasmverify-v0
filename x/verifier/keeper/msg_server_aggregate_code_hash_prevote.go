@@ -33,11 +33,22 @@ func (k msgServer) AggregateCodeHashPrevote(goCtx context.Context, msg *types.Ms
 	// 	return nil, types.ErrInvalidHash.Wrap(err.Error())
 	// }
 
-	// Check if the prevote made by validator is in the vote period
+	// Check if the prevote made by validator is in the vote period for the penidg Contarct
+	finalPrevoteTime, err := k.GetContractPrevoteTime(ctx, msg.ApplicationId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if uint64(ctx.BlockHeight()) > finalPrevoteTime {
+		return nil, types.ErrPreVoteTimePassed
+	}
+
 	aggregatePrevote := types.CodeHashPreVote{
-		Hash:        msg.Hash,
-		Voter:       msg.Creator,
-		SubmitBlock: uint64(ctx.BlockHeight()),
+		ApplicationId: msg.ApplicationId,
+		Hash:          msg.Hash,
+		Voter:         msg.Creator,
+		SubmitBlock:   uint64(ctx.BlockHeight()),
 	}
 	// (ctxbyte val address prevote struct)
 	k.SetAggregateCodeHashPrevote(ctx, valAddr, aggregatePrevote)
