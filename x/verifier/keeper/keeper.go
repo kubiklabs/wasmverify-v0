@@ -59,9 +59,9 @@ func (k Keeper) ValidateValidator(ctx sdk.Context, vAddr sdk.ValAddress) error {
 	return nil
 }
 
-///////////////PREVOTE	PREVOTE	PREVOTE	PREVOTE	PREVOTE/////////////////////////////////////////////
-///////////////PREVOTE	PREVOTE	PREVOTE	PREVOTE	PREVOTE/////////////////////////////////////////////
-///////////////PREVOTE	PREVOTE	PREVOTE	PREVOTE	PREVOTE/////////////////////////////////////////////
+///////////////			PREVOTE	PREVOTE	PREVOTE	PREVOTE	PREVOTE		/////////////////////////
+///////////////			PREVOTE	PREVOTE	PREVOTE	PREVOTE	PREVOTE		/////////////////////////
+///////////////			PREVOTE	PREVOTE	PREVOTE	PREVOTE	PREVOTE		/////////////////////////
 
 // GetAggregateCodeHashPrevote retrieves an oracle prevote(which is submitted hash) from the store.
 func (k Keeper) GetAggregateCodeHashPrevote(
@@ -102,7 +102,7 @@ func (k Keeper) SetAggregateCodeHashPrevote(
 }
 
 // DeleteAggregateExchangeRatePrevote deletes an oracle prevote from the store.
-func (k Keeper) DeleteAggregateExchangeRatePrevote(ctx sdk.Context, voter sdk.ValAddress) {
+func (k Keeper) DeleteAggregateCodeHashPrevote(ctx sdk.Context, voter sdk.ValAddress) {
 	store := ctx.KVStore(k.storeKey)
 	store.Delete(ConcatBytes(0, types.KeyPrefixAggregateCodeHashPrevote, address.MustLengthPrefix(voter)))
 }
@@ -126,6 +126,75 @@ func (k Keeper) IterateAggregateCodeHashPrevotes(
 		}
 	}
 }
+
+///////////////			VOTE	VOTE	VOTE	VOTE	VOTE		/////////////////////////
+///////////////			VOTE	VOTE	VOTE	VOTE	VOTE		/////////////////////////
+///////////////			VOTE	VOTE	VOTE	VOTE	VOTE		/////////////////////////
+
+// GetAggregateCodeHashVote retrieves vote from the store.
+func (k Keeper) GetAggregateCodeHashVote(
+	ctx sdk.Context,
+	voter sdk.ValAddress,
+) (types.CodeHashVote, error) {
+	store := ctx.KVStore(k.storeKey)
+
+	bz := store.Get(ConcatBytes(0, types.KeyPrefixAggregateCodeHashVote, address.MustLengthPrefix(voter)))
+	if bz == nil {
+		return types.CodeHashVote{}, types.ErrNoAggregateVote.Wrap(voter.String())
+	}
+
+	var aggregateVote types.CodeHashVote
+	k.cdc.MustUnmarshal(bz, &aggregateVote)
+
+	return aggregateVote, nil
+}
+
+// SetAggregateExchangeRateVote adds an oracle aggregate vote to the store.
+func (k Keeper) SetAggregateCodeHashVote(
+	ctx sdk.Context,
+	voter sdk.ValAddress,
+	vote types.CodeHashVote,
+) {
+	store := ctx.KVStore(k.storeKey)
+
+	bz := k.cdc.MustMarshal(&vote)
+	store.Set(ConcatBytes(0, types.KeyPrefixAggregateCodeHashVote, address.MustLengthPrefix(voter)), bz)
+}
+
+// DeleteAggregateExchangeRateVote deletes an oracle prevote from the store.
+func (k Keeper) DeleteAggregateCodeHashVote(ctx sdk.Context, voter sdk.ValAddress) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(ConcatBytes(0, types.KeyPrefixAggregateCodeHashVote, address.MustLengthPrefix(voter)))
+}
+
+type IterateCodeHashVote = func(
+	voterAddr sdk.ValAddress,
+	aggregateVote types.CodeHashVote,
+) (stop bool)
+
+// IterateAggregateCodeHashVotes iterates rate over votes in the store.
+func (k Keeper) IterateAggregateCodeHashVotes(
+	ctx sdk.Context,
+	handler IterateCodeHashVote,
+) {
+	store := ctx.KVStore(k.storeKey)
+	iter := sdk.KVStorePrefixIterator(store, types.KeyPrefixAggregateCodeHashVote)
+	defer iter.Close()
+
+	for ; iter.Valid(); iter.Next() {
+		voterAddr := sdk.ValAddress(iter.Key()[2:])
+		var aggregateVote types.CodeHashVote
+		k.cdc.MustUnmarshal(iter.Value(), &aggregateVote)
+
+		if handler(voterAddr, aggregateVote) {
+			break
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
 // ConcatBytes creates a new slice by merging list of bytes and leaving empty amount of margin
 // bytes at the end

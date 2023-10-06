@@ -60,9 +60,13 @@ func (k msgServer) AggregateCodeHashVote(goCtx context.Context, msg *types.MsgAg
 	// }
 
 	// Move aggregate prevote to aggregate vote with given CodeHash
-	aggregateCodeHashVote := types.CodeHashVote{}
-	ms.SetAggregateExchangeRateVote(ctx, valAddr, types.NewAggregateCodeHashVote(filteredTuples, valAddr))
-	ms.DeleteAggregateExchangeRatePrevote(ctx, valAddr)
+	aggregateCodeHashVote := types.CodeHashVote{
+		ApplicationId: msg.ApplicationId,
+		CodeHash:      msg.CodeHash,
+		Voter:         msg.Creator,
+	}
+	k.SetAggregateCodeHashVote(ctx, valAddr, aggregateCodeHashVote)
+	k.DeleteAggregateCodeHashPrevote(ctx, valAddr)
 
 	return &types.MsgAggregateCodeHashVoteResponse{}, nil
 }
