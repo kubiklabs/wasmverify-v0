@@ -22,8 +22,9 @@ message MsgAggregateCodeHashPrevote {
 message MsgAggregateCodeHashPrevoteResponse {}
 
 message MsgApplyVerifyApplication {
-  string creator         = 1;
-  string offchainCodeUrl = 2;
+  uint64 id              = 1;
+  string creator         = 2;
+  string offchainCodeUrl = 3;
 }
 
 message MsgApplyVerifyApplicationResponse {

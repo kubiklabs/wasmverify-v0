@@ -24,6 +24,12 @@ service Query {
     option (google.api.http).get = "/verifier/verifier/contract_info/{id}";
   
   }
+  
+  // Queries a list of CurrentPendingContract items.
+  rpc CurrentPendingContract (QueryCurrentPendingContractRequest) returns (QueryCurrentPendingContractResponse) {
+    option (google.api.http).get = "/verifier/verifier/current_pending_contract";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -41,5 +47,11 @@ message QueryContractInfoRequest {
 
 message QueryContractInfoResponse {
   ContractInfo contractinfo = 1;
+}
+
+message QueryCurrentPendingContractRequest {}
+
+message QueryCurrentPendingContractResponse {
+  uint64 id = 1;
 }
 
