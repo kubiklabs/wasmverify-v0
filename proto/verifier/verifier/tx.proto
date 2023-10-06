@@ -15,16 +15,16 @@ service Msg {
   rpc AggregateCodeHashVote    (MsgAggregateCodeHashVote   ) returns (MsgAggregateCodeHashVoteResponse   );
 }
 message MsgAggregateCodeHashPrevote {
-  string creator = 1;
-  string hash    = 2;
+  uint64 ApplicationId  = 1;
+  string creator        = 2;
+  string hash           = 3;
 }
 
 message MsgAggregateCodeHashPrevoteResponse {}
 
 message MsgApplyVerifyApplication {
-  uint64 id              = 1;
-  string creator         = 2;
-  string offchainCodeUrl = 3;
+  string creator         = 1;
+  string offchainCodeUrl = 2;
 }
 
 message MsgApplyVerifyApplicationResponse {
