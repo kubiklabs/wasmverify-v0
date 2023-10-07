@@ -17,22 +17,10 @@ func (k Keeper) CurrentPendingContract(goCtx context.Context, req *types.QueryCu
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// (total contract - total pending contract) = id of next pending contract
-	totalContract := k.GetContractCount(ctx)
-	totalPendingContract := k.GetPendingContractsCount(ctx)
+	currentPendingContractId := k.GetCurrentPendingContractId(ctx)
 
-	var currentPendingContractId uint64 = 0
-	if totalPendingContract == 0 {
-		currentPendingContractId = 0
-	}
-
-	currentPendingContractId = ((totalContract) - totalPendingContract + 1)
-
-	_, found := k.GetContractInfo(ctx, currentPendingContractId)
-	if !found {
-		return &types.QueryCurrentPendingContractResponse{
-			Id: 0,
-		}, nil
+	if currentPendingContractId == 0 {
+		return nil, types.ErrNoPendingContractfound
 	}
 
 	return &types.QueryCurrentPendingContractResponse{

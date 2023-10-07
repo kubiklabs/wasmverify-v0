@@ -32,7 +32,8 @@ var (
 	ErrMalformedLatestAvgPrice = errors.Register(ModuleName, 21, "malformed latest avg price, expecting one byte")
 	ErrContractInfoNotFound    = errors.Register(ModuleName, 22, "ContractInfo not found")
 	// This error we will get in GetPrevoteTime for findinng prevote time for any contract info
-	ErrVoteBlockTimeNotFound = errors.Register(ModuleName, 23, "Vote blocks not found")
-	ErrPreVoteTimePassed     = errors.Register(ModuleName, 24, "Prevote time passed for this Application Id")
-	ErrVoteTimePassed        = errors.Register(ModuleName, 24, "Vote time passed for this Application Id")
+	ErrVoteBlockTimeNotFound  = errors.Register(ModuleName, 23, "Vote blocks not found")
+	ErrPreVoteTimePassed      = errors.Register(ModuleName, 24, "Prevote time passed for this Application Id")
+	ErrVoteTimePassed         = errors.Register(ModuleName, 25, "Vote time passed for this Application Id")
+	ErrNoPendingContractfound = errors.Register(ModuleName, 26, "No pending contract to verify")
 )

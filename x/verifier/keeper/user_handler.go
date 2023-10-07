@@ -75,6 +75,28 @@ func (k Keeper) GetPendingContractsCount(ctx sdk.Context) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
 
+// GetCurrentPendingContractId gets the Id of current pending Contract
+func (k Keeper) GetCurrentPendingContractId(ctx sdk.Context) uint64 {
+	// (total contract - total pending contract) = id of next pending contract
+	totalContract := k.GetContractCount(ctx)
+	totalPendingContract := k.GetPendingContractsCount(ctx)
+
+	var currentPendingContractId uint64 = 0
+	if totalPendingContract != 0 {
+		currentPendingContractId = ((totalContract) - totalPendingContract + 1)
+	}
+	// ABoce statement is sufficient to find the current pending contract id
+	// _, found := k.GetContractInfo(ctx, currentPendingContractId)
+	// if !found {
+	// 	return &types.QueryCurrentPendingContractResponse{
+	// 		Id: 0,
+	// 	}, nil
+	// }
+
+	// Parse bytes
+	return currentPendingContractId
+}
+
 // SetPendingContractsCount set the total number of pendingContracts
 func (k Keeper) SetPendingContractsCount(ctx sdk.Context, count uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
