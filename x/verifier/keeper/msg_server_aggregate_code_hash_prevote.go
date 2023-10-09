@@ -12,7 +12,7 @@ func (k msgServer) AggregateCodeHashPrevote(goCtx context.Context, msg *types.Ms
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// derive validator address from tx sender address
-	valAddr, err := sdk.ValAddressFromBech32(msg.Validator)
+	valAddr, err := sdk.ValAddressFromBech32(msg.Operator)
 	if err != nil {
 		return nil, err
 	}

@@ -39,5 +39,4 @@ var (
 	ErrVerificationBlockNotReachedYet       = errors.Register(ModuleName, 27, "Verification is going on, verifiy again when block height reached assigned verification height")
 	ValidationBlockPassedWithoutHashUpdate  = errors.Register(ModuleName, 28, "Verificationblock passed but hash was not updated by validators, Code Error")
 	ErrMatchingOffChainCodehashToCodeIdHash = errors.Register(ModuleName, 29, "Provided codeid does not match with thw off chain contract code hash")
-	ErrHashNotProvidedByvalidators          = errors.Register(ModuleName, 30, "Hash not provided by validaotors")
 )
