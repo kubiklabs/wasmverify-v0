@@ -178,3 +178,38 @@ func GetPendingContractsIDBytes(id uint64) []byte {
 func GetPendingContractsIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
+
+func (k Keeper) verifyHash(ctx sdk.Context, msg *types.MsgFinalVerification) (string, error) {
+
+	ContractInfo, found := k.GetContractInfo(ctx, msg.ApplicationId)
+	pendingContractCnt := k.GetPendingContractsCount(ctx)
+
+	if !found {
+		return "", types.ErrContractInfoNotFound
+	}
+
+	if ContractInfo.AssignedVerificationBlockHeight >= uint64(ctx.BlockHeight()) {
+		return "", types.ErrVerificationBlockNotReachedYet
+	}
+	if ContractInfo.OffchainCodeHash == "" {
+		return "", types.ValidationBlockPassedWithoutHashUpdate
+	}
+
+	// fetch contractHash with this codeid and compare the hash
+	// GetCodeInfo(ctx sdk.Context, codeID uint64) *CodeInfo
+	// GetCodeInfo is a keeper meethod of wasm module which return CodeInfo, which  contains CodeHash
+	codeInfo := k.wasmKeeper.GetCodeInfo(ctx, msg.CodeId)
+	// Check codehash to string conversion(byte-> string)
+	if string(codeInfo.CodeHash[:]) == ContractInfo.OffchainCodeHash {
+		ContractInfo.CodeId = msg.CodeId
+		k.SetContractInfo(ctx, ContractInfo)
+		k.SetPendingContractsCount(ctx, pendingContractCnt-1)
+
+		// 1. Create a map of codeId to id to store the verified contracts
+		// 2. Create a query which takes codeId and then return the status if verified after checking the contract list
+
+		return "Verified", nil
+	} else {
+		return "", types.ErrMatchingOffChainCodehashToCodeIdHash
+	}
+}

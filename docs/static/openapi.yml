@@ -75323,6 +75323,11 @@ definitions:
       applicationId:
         type: string
         format: uint64
+  verifier.verifier.MsgFinalVerificationResponse:
+    type: object
+    properties:
+      response:
+        type: string
   verifier.verifier.MsgUpdateBlockTimeResponse:
     type: object
   verifier.verifier.Params:

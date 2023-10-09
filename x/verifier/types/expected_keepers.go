@@ -2,6 +2,7 @@ package types
 
 import (
 	sdkmath "cosmossdk.io/math"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -46,4 +47,8 @@ type BankKeeper interface {
 	SendCoinsFromModuleToModule(ctx sdk.Context, senderModule, recipientModule string, amt sdk.Coins) error
 	GetDenomMetaData(ctx sdk.Context, denom string) (banktypes.Metadata, bool)
 	SetDenomMetaData(ctx sdk.Context, denomMetaData banktypes.Metadata)
+}
+
+type WasmKeeper interface {
+	GetCodeInfo(ctx sdk.Context, codeID uint64) *wasmtypes.CodeInfo
 }

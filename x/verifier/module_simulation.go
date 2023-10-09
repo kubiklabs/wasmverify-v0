@@ -39,6 +39,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgAggregateCodeHashVote int = 100
 
+	opWeightMsgFinalVerification = "op_weight_msg_final_verification"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgFinalVerification int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -111,6 +115,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		verifiersimulation.SimulateMsgAggregateCodeHashVote(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgFinalVerification int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgFinalVerification, &weightMsgFinalVerification, nil,
+		func(_ *rand.Rand) {
+			weightMsgFinalVerification = defaultWeightMsgFinalVerification
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgFinalVerification,
+		verifiersimulation.SimulateMsgFinalVerification(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -148,6 +163,14 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgAggregateCodeHashVote,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				verifiersimulation.SimulateMsgAggregateCodeHashVote(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgFinalVerification,
+			defaultWeightMsgFinalVerification,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				verifiersimulation.SimulateMsgFinalVerification(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),

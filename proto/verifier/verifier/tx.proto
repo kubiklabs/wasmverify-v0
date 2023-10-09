@@ -13,12 +13,13 @@ service Msg {
   rpc ApplyVerifyApplication   (MsgApplyVerifyApplication  ) returns (MsgApplyVerifyApplicationResponse  );
   rpc UpdateBlockTime          (MsgUpdateBlockTime         ) returns (MsgUpdateBlockTimeResponse         );
   rpc AggregateCodeHashVote    (MsgAggregateCodeHashVote   ) returns (MsgAggregateCodeHashVoteResponse   );
+  rpc FinalVerification        (MsgFinalVerification       ) returns (MsgFinalVerificationResponse       );
 }
 message MsgAggregateCodeHashPrevote {
-  uint64 ApplicationId  = 1;
-  string operator        = 2;
-  string validator      = 3;
-  string hash           = 4;
+  uint64 ApplicationId = 1;
+  string operator      = 2;
+  string validator     = 3;
+  string hash          = 4;
 }
 
 message MsgAggregateCodeHashPrevoteResponse {}
@@ -50,4 +51,14 @@ message MsgAggregateCodeHashVote {
 }
 
 message MsgAggregateCodeHashVoteResponse {}
+
+message MsgFinalVerification {
+  string creator       = 1;
+  uint64 applicationId = 2;
+  uint64 codeId        = 3;
+}
+
+message MsgFinalVerificationResponse {
+  string response = 1;
+}
 
