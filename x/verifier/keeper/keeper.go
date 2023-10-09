@@ -196,6 +196,29 @@ func (k Keeper) IterateAggregateCodeHashVotes(
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
+// ClearVotes clears all tallied prevotes and votes from the store.
+func (k Keeper) ClearVotes(ctx sdk.Context) {
+
+	k.IterateAggregateCodeHashPrevotes(
+		ctx,
+		func(voterAddr sdk.ValAddress, aggPrevote types.CodeHashPreVote) bool {
+
+			k.DeleteAggregateCodeHashPrevote(ctx, voterAddr)
+
+			return false
+		},
+	)
+
+	// clear all aggregate votes
+	k.IterateAggregateCodeHashVotes(
+		ctx,
+		func(voterAddr sdk.ValAddress, _ types.CodeHashVote) bool {
+			k.DeleteAggregateCodeHashVote(ctx, voterAddr)
+			return false
+		},
+	)
+}
+
 // ConcatBytes creates a new slice by merging list of bytes and leaving empty amount of margin
 // bytes at the end
 func ConcatBytes(margin int, bzs ...[]byte) []byte {

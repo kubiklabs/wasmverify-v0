@@ -20,30 +20,70 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper) error {
 	// 4. Decrease the couter of the pending contract
 
 	currentpendingContractId := k.GetCurrentPendingContractId(ctx)
-	currentPendingContractFinalVerificationBlock, err := k.GetContractFinalVerificationTime(currentpendingContractId)
+	// currentPendingContractFinalVerificationBlock, err := k.GetContractFinalVerificationTime(currentpendingContractId)
+	currentPendingContractInfo, found := k.GetContractInfo(ctx, currentpendingContractId)
 
-	if err != nil {
-		return err
+	if !found {
+		return types.ErrContractInfoNotFound
 	}
 
-	if uint64(ctx.BlockHeight()) == currentPendingContractFinalVerificationBlock {
+	if uint64(ctx.BlockHeight()) == currentPendingContractInfo.AssignedVerificationBlockHeight {
+		finalizeHashForthisApplicationId := calculateStakeWeightedFinalHash(ctx, k)
+		currentPendingContractInfo.OffchainCodeHash = finalizeHashForthisApplicationId
 
+		k.SetContractInfo(ctx, currentPendingContractInfo)
 	}
-
-	// params := k.GetParams(ctx)
-	// if k.IsPeriodLastBlock(ctx, params.VotePeriod) {
-	// 	if err := CalcPrices(ctx, params, k); err != nil {
-	// 		return err
-	// 	}
-	// }
-
-	// // Slash oracle providers who missed voting over the threshold and
-	// // reset miss counters of all validators at the last block of slash window
-	// if k.IsPeriodLastBlock(ctx, params.SlashWindow) {
-	// 	k.SlashAndResetMissCounters(ctx)
-	// }
-
-	// k.PruneAllPrices(ctx)
 
 	return nil
+}
+
+// Also handle the slashing for different hash provided
+func calculateStakeWeightedFinalHash(ctx sdk.Context, k keeper.Keeper) string {
+	// Build claim map over all validators in active set
+	validatorDataMap := make(map[string]types.ValidatorData)
+	powerReduction := k.StakingKeeper.PowerReduction(ctx)
+	// Calculate total validator power
+	var totalBondedPower int64
+	for _, v := range k.StakingKeeper.GetBondedValidatorsByPower(ctx) {
+		// operator is the validator itself in our case
+		addr := v.GetOperator()
+		power := v.GetConsensusPower(powerReduction)
+		totalBondedPower += power
+		validatorDataMap[addr.String()] = types.NewValidatorData(power, addr)
+	}
+
+	// Here we have a map consisting all the validators and the voting power of the validator
+	// Now create a  map iterate over all the votes and store the hash in the map with hash-> total power received on this hash
+	// We can set a threshold for the voting to be done or that much of voting atleast received from that vote
+	// Save that hash in the state and we will the validators who have not voted and can be slashed
+	voteOnHashMap := make(map[string]uint64)
+	finalizeHashhandler := func(voterAddr sdk.ValAddress, vote types.CodeHashVote) bool {
+		_, ok := validatorDataMap[vote.Voter]
+		if ok {
+			voteOnHashMap[vote.CodeHash] += uint64(validatorDataMap[vote.Voter].Power)
+		}
+		return false
+	}
+	k.IterateAggregateCodeHashVotes(ctx, finalizeHashhandler)
+
+	var finalHash string = ""
+	var associatedHashWt uint64 = 0
+	// finalize average by dividing by total stake, i.e. total weights
+	// What top two  weight is equal, then ambigious
+	for hash, weight := range voteOnHashMap {
+		if uint64(associatedHashWt) < weight {
+			associatedHashWt = weight
+			finalHash = hash
+		}
+	}
+	// Slash all the validators who didn't vote
+
+	/////////////////////////////////////////////
+	/////////////////////////////////////////////
+	/////////////////////////////////////////////
+
+	// remove all the prevote and vote
+	k.ClearVotes(ctx)
+
+	return finalHash
 }

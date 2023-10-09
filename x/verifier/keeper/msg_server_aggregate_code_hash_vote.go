@@ -13,7 +13,7 @@ func (k msgServer) AggregateCodeHashVote(goCtx context.Context, msg *types.MsgAg
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// derive validator address from tx sender address
-	valAddr, err := sdk.ValAddressFromBech32(msg.Creator)
+	valAddr, err := sdk.ValAddressFromBech32(msg.Operator)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +35,7 @@ func (k msgServer) AggregateCodeHashVote(goCtx context.Context, msg *types.MsgAg
 
 	aggregatePrevote, err := k.GetAggregateCodeHashPrevote(ctx, valAddr)
 	if err != nil {
-		return nil, types.ErrNoAggregatePrevote.Wrap((msg.Creator + " for appId: " + string(msg.ApplicationId)))
+		return nil, types.ErrNoAggregatePrevote.Wrap((msg.Operator + " for appId: " + string(msg.ApplicationId)))
 	}
 
 	// exchangeRateTuples, err := types.ParseExchangeRateTuples(msg.ExchangeRates)
@@ -44,7 +44,7 @@ func (k msgServer) AggregateCodeHashVote(goCtx context.Context, msg *types.MsgAg
 	// }
 
 	// Verify that the vote hash and prevote hash match
-	hash := types.GetAggregateVoteHash(msg.Salt, msg.CodeHash, msg.Creator)
+	hash := types.GetAggregateVoteHash(msg.Salt, msg.CodeHash, msg.Operator)
 	if aggregatePrevote.Hash != hash.String() {
 		return nil, types.ErrVerificationFailed.Wrapf("must be given %s not %s", aggregatePrevote.Hash, hash)
 	}
@@ -53,7 +53,7 @@ func (k msgServer) AggregateCodeHashVote(goCtx context.Context, msg *types.MsgAg
 	aggregateCodeHashVote := types.CodeHashVote{
 		ApplicationId: msg.ApplicationId,
 		CodeHash:      msg.CodeHash,
-		Voter:         msg.Creator,
+		Voter:         msg.Operator,
 	}
 	k.SetAggregateCodeHashVote(ctx, valAddr, aggregateCodeHashVote)
 	k.DeleteAggregateCodeHashPrevote(ctx, valAddr)

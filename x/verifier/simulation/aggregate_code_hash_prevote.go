@@ -3,11 +3,12 @@ package simulation
 import (
 	"math/rand"
 
+	"verifier/x/verifier/keeper"
+	"verifier/x/verifier/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"verifier/x/verifier/keeper"
-	"verifier/x/verifier/types"
 )
 
 func SimulateMsgAggregateCodeHashPrevote(
@@ -19,7 +20,7 @@ func SimulateMsgAggregateCodeHashPrevote(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 		msg := &types.MsgAggregateCodeHashPrevote{
-			Creator: simAccount.Address.String(),
+			Operator: simAccount.Address.String(),
 		}
 
 		// TODO: Handling the AggregateCodeHashPrevote simulation

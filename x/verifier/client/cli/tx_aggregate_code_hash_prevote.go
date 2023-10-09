@@ -16,15 +16,16 @@ var _ = strconv.Itoa(0)
 
 func CmdAggregateCodeHashPrevote() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "aggregate-code-hash-prevote [hash]",
+		Use:   "aggregate-code-hash-prevote [application-id] [validator] [Codehash]",
 		Short: "Broadcast message AggregateCodeHashPrevote",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argApplicationId, err := cast.ToUint64E(args[0])
 			if err != nil {
 				return err
 			}
-			argHash := args[1]
+			argValidator := args[1]
+			argHash := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -34,6 +35,7 @@ func CmdAggregateCodeHashPrevote() *cobra.Command {
 			msg := types.NewMsgAggregateCodeHashPrevote(
 				argApplicationId,
 				clientCtx.GetFromAddress().String(),
+				argValidator,
 				argHash,
 			)
 			if err := msg.ValidateBasic(); err != nil {
