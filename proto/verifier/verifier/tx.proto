@@ -17,7 +17,6 @@ service Msg {
 }
 message MsgAggregateCodeHashPrevote {
   uint64 ApplicationId = 1;
-  string operator      = 2;
   string validator     = 3;
   string hash          = 4;
 }
@@ -44,7 +43,6 @@ message MsgUpdateBlockTimeResponse {}
 
 message MsgAggregateCodeHashVote {
   uint64 ApplicationId = 1;
-  string operator      = 2;
   string validator     = 3;
   string salt          = 4;
   string codeHash      = 5;

@@ -20,6 +20,10 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper) error {
 	// 4. Decrease the couter of the pending contract
 
 	currentpendingContractId := k.GetCurrentPendingContractId(ctx)
+	if currentpendingContractId == 0 {
+		return nil
+	}
+
 	// currentPendingContractFinalVerificationBlock, err := k.GetContractFinalVerificationTime(currentpendingContractId)
 	currentPendingContractInfo, found := k.GetContractInfo(ctx, currentpendingContractId)
 
@@ -29,6 +33,9 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper) error {
 
 	if uint64(ctx.BlockHeight()) == currentPendingContractInfo.AssignedVerificationBlockHeight {
 		finalizeHashForthisApplicationId := calculateStakeWeightedFinalHash(ctx, k)
+		if finalizeHashForthisApplicationId == "" {
+			return types.ErrHashNotProvidedByvalidators
+		}
 		currentPendingContractInfo.OffchainCodeHash = finalizeHashForthisApplicationId
 
 		k.SetContractInfo(ctx, currentPendingContractInfo)
