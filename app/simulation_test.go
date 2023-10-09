@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	dbm "github.com/cometbft/cometbft-db"
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/libs/log"
@@ -86,17 +87,20 @@ func BenchmarkSimulation(b *testing.B) {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = app.DefaultNodeHome
 	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
+	var emptyWasmOpts []wasmkeeper.Option
 
 	bApp := app.New(
 		logger,
 		db,
 		nil,
 		true,
+		app.GetEnabledProposals(),
 		map[int64]bool{},
 		app.DefaultNodeHome,
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		emptyWasmOpts,
 		baseapp.SetChainID(config.ChainID),
 	)
 	require.Equal(b, app.Name, bApp.Name())
@@ -161,18 +165,20 @@ func TestAppStateDeterminism(t *testing.T) {
 			}
 			chainID := fmt.Sprintf("chain-id-%d-%d", i, j)
 			config.ChainID = chainID
-
+			var emptyWasmOpts []wasmkeeper.Option
 			db := dbm.NewMemDB()
 			bApp := app.New(
 				logger,
 				db,
 				nil,
 				true,
+				app.GetEnabledProposals(),
 				map[int64]bool{},
 				app.DefaultNodeHome,
 				simcli.FlagPeriodValue,
 				app.MakeEncodingConfig(),
 				appOptions,
+				emptyWasmOpts,
 				fauxMerkleModeOpt,
 				baseapp.SetChainID(chainID),
 			)
@@ -240,17 +246,19 @@ func TestAppImportExport(t *testing.T) {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = app.DefaultNodeHome
 	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
-
+	var emptyWasmOpts []wasmkeeper.Option
 	bApp := app.New(
 		logger,
 		db,
 		nil,
 		true,
+		app.GetEnabledProposals(),
 		map[int64]bool{},
 		app.DefaultNodeHome,
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		emptyWasmOpts,
 		baseapp.SetChainID(config.ChainID),
 	)
 	require.Equal(t, app.Name, bApp.Name())
@@ -307,11 +315,13 @@ func TestAppImportExport(t *testing.T) {
 		newDB,
 		nil,
 		true,
+		app.GetEnabledProposals(),
 		map[int64]bool{},
 		app.DefaultNodeHome,
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		emptyWasmOpts,
 		baseapp.SetChainID(config.ChainID),
 	)
 	require.Equal(t, app.Name, bApp.Name())
@@ -394,17 +404,19 @@ func TestAppSimulationAfterImport(t *testing.T) {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = app.DefaultNodeHome
 	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
-
+	var emptyWasmOpts []wasmkeeper.Option
 	bApp := app.New(
 		logger,
 		db,
 		nil,
 		true,
+		app.GetEnabledProposals(),
 		map[int64]bool{},
 		app.DefaultNodeHome,
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		emptyWasmOpts,
 		fauxMerkleModeOpt,
 		baseapp.SetChainID(config.ChainID),
 	)
@@ -467,11 +479,13 @@ func TestAppSimulationAfterImport(t *testing.T) {
 		newDB,
 		nil,
 		true,
+		app.GetEnabledProposals(),
 		map[int64]bool{},
 		app.DefaultNodeHome,
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		emptyWasmOpts,
 		fauxMerkleModeOpt,
 		baseapp.SetChainID(config.ChainID),
 	)
