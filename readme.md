@@ -1,4 +1,7 @@
-# verifier
+# WasmVerifier v0
+
+Wasm binary verification module with inbuilt verification consensus.
+
 **verifier** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
 
 ## Get started
