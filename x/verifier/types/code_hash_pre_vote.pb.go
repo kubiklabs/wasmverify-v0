@@ -22,6 +22,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// hash provided must be hex encoded to string(because hash is binary)
 type CodeHashPreVote struct {
 	ApplicationId uint64 `protobuf:"varint,1,opt,name=applicationId,proto3" json:"applicationId,omitempty"`
 	Hash          string `protobuf:"bytes,2,opt,name=hash,proto3" json:"hash,omitempty"`

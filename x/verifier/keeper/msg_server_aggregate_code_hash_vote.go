@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"encoding/hex"
 
 	"verifier/x/verifier/types"
 
@@ -13,7 +14,7 @@ func (k msgServer) AggregateCodeHashVote(goCtx context.Context, msg *types.MsgAg
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// derive validator address from tx sender address
-	valAddr, err := sdk.ValAddressFromBech32(msg.Operator)
+	valAddr, err := sdk.ValAddressFromBech32(msg.Validator)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +46,7 @@ func (k msgServer) AggregateCodeHashVote(goCtx context.Context, msg *types.MsgAg
 
 	// Verify that the vote hash and prevote hash match
 	hash := types.GetAggregateVoteHash(msg.Salt, msg.CodeHash, msg.Operator)
-	if aggregatePrevote.Hash != hash.String() {
+	if aggregatePrevote.Hash != hex.EncodeToString(hash) {
 		return nil, types.ErrVerificationFailed.Wrapf("must be given %s not %s", aggregatePrevote.Hash, hash)
 	}
 
@@ -53,7 +54,7 @@ func (k msgServer) AggregateCodeHashVote(goCtx context.Context, msg *types.MsgAg
 	aggregateCodeHashVote := types.CodeHashVote{
 		ApplicationId: msg.ApplicationId,
 		CodeHash:      msg.CodeHash,
-		Voter:         msg.Operator,
+		Voter:         valAddr.String(),
 	}
 	k.SetAggregateCodeHashVote(ctx, valAddr, aggregateCodeHashVote)
 	k.DeleteAggregateCodeHashPrevote(ctx, valAddr)

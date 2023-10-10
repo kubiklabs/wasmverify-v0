@@ -1,6 +1,7 @@
 package verifier
 
 import (
+	"fmt"
 	"time"
 
 	"verifier/x/verifier/keeper"
@@ -20,6 +21,10 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper) error {
 	// 4. Decrease the couter of the pending contract
 
 	currentpendingContractId := k.GetCurrentPendingContractId(ctx)
+	if currentpendingContractId == 0 {
+		return nil
+	}
+
 	// currentPendingContractFinalVerificationBlock, err := k.GetContractFinalVerificationTime(currentpendingContractId)
 	currentPendingContractInfo, found := k.GetContractInfo(ctx, currentpendingContractId)
 
@@ -29,6 +34,9 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper) error {
 
 	if uint64(ctx.BlockHeight()) == currentPendingContractInfo.AssignedVerificationBlockHeight {
 		finalizeHashForthisApplicationId := calculateStakeWeightedFinalHash(ctx, k)
+		if finalizeHashForthisApplicationId == "" {
+			return types.ErrInvalidHash
+		}
 		currentPendingContractInfo.OffchainCodeHash = finalizeHashForthisApplicationId
 
 		k.SetContractInfo(ctx, currentPendingContractInfo)
@@ -40,6 +48,7 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper) error {
 // Also handle the slashing for different hash provided
 func calculateStakeWeightedFinalHash(ctx sdk.Context, k keeper.Keeper) string {
 	// Build claim map over all validators in active set
+	fmt.Println("Started calculateweightedhash")
 	validatorDataMap := make(map[string]types.ValidatorData)
 	powerReduction := k.StakingKeeper.PowerReduction(ctx)
 	// Calculate total validator power
@@ -66,6 +75,8 @@ func calculateStakeWeightedFinalHash(ctx sdk.Context, k keeper.Keeper) string {
 	}
 	k.IterateAggregateCodeHashVotes(ctx, finalizeHashhandler)
 
+	fmt.Println("Iterated on all the prevotes and calculated hash and their weight")
+
 	var finalHash string = ""
 	var associatedHashWt uint64 = 0
 	// finalize average by dividing by total stake, i.e. total weights
@@ -78,12 +89,9 @@ func calculateStakeWeightedFinalHash(ctx sdk.Context, k keeper.Keeper) string {
 	}
 	// Slash all the validators who didn't vote
 
-	/////////////////////////////////////////////
-	/////////////////////////////////////////////
-	/////////////////////////////////////////////
-
 	// remove all the prevote and vote
 	k.ClearVotes(ctx)
+	fmt.Println("Cleared votes")
 
 	return finalHash
 }

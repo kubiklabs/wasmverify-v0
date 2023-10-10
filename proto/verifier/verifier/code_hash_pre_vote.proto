@@ -2,7 +2,7 @@ syntax = "proto3";
 package verifier.verifier;
 
 option go_package = "verifier/x/verifier/types";
-
+// hash provided must be hex encoded to string(because hash is binary)
 message CodeHashPreVote {
   uint64 applicationId = 1;
   string hash = 2; 

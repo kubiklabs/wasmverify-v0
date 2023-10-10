@@ -13,6 +13,8 @@ sed -i "s/\"stake\"/\"$STAKE\"/" "$HOME"/.verifier/config/genesis.json
 # this is essential for sub-1s block times (or header times go crazy)
 sed -i 's/"time_iota_ms": "1000"/"time_iota_ms": "10"/' "$HOME"/.verifier/config/genesis.json
 
+sed -i 's/keyring-backend = "os"/keyring-backend = "test"/' "$HOME"/.verifier/config/client.toml
+
 if ! verifierd keys show validator; then
   (echo "$PASSWORD"; echo "$PASSWORD") | verifierd keys add validator
 fi

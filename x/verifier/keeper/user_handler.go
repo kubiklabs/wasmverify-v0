@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"encoding/binary"
+	"encoding/hex"
 	"verifier/x/verifier/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
@@ -199,8 +200,9 @@ func (k Keeper) verifyHash(ctx sdk.Context, msg *types.MsgFinalVerification) (st
 	// GetCodeInfo(ctx sdk.Context, codeID uint64) *CodeInfo
 	// GetCodeInfo is a keeper meethod of wasm module which return CodeInfo, which  contains CodeHash
 	codeInfo := k.wasmKeeper.GetCodeInfo(ctx, msg.CodeId)
-	// Check codehash to string conversion(byte-> string)
-	if string(codeInfo.CodeHash[:]) == ContractInfo.OffchainCodeHash {
+
+	// Check provided codehash is also hex encoded string)
+	if hex.EncodeToString(codeInfo.CodeHash[:]) == ContractInfo.OffchainCodeHash {
 		ContractInfo.CodeId = msg.CodeId
 		k.SetContractInfo(ctx, ContractInfo)
 		k.SetPendingContractsCount(ctx, pendingContractCnt-1)
