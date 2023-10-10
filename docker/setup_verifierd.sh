@@ -3,7 +3,7 @@
 
 PASSWORD=${PASSWORD:-1234567890}
 STAKE=${STAKE_TOKEN:-stake}
-FEE=${FEE_TOKEN:-stake}
+FEE=${FEE_TOKEN:-fee}
 CHAIN_ID=${CHAIN_ID:-testing}
 MONIKER=${MONIKER:-node001}
 
@@ -27,7 +27,7 @@ done
 
 # submit a genesis validator tx
 ## Workraround for https://github.com/cosmos/cosmos-sdk/issues/8251
-(echo "$PASSWORD"; echo "$PASSWORD"; echo "$PASSWORD") | verifierd genesis gentx validator "250000000$STAKE" --chain-id="$CHAIN_ID" --amount="250000000$STAKE"
+(echo "$PASSWORD"; echo "$PASSWORD"; echo "$PASSWORD") | verifierd gentx validator "250000000$STAKE" --chain-id="$CHAIN_ID" --amount="250000000$STAKE"
 ## should be:
 # (echo "$PASSWORD"; echo "$PASSWORD"; echo "$PASSWORD") | verifierd gentx validator "250000000$STAKE" --chain-id="$CHAIN_ID"
-verifierd genesis collect-gentxs
+verifierd collect-gentxs
