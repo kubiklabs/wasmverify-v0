@@ -6,4 +6,4 @@ if test -n "$1"; then
 fi
 
 mkdir -p /root/log
-verifierd start --rpc.laddr tcp://0.0.0.0:26657 --trace
+verifierd start --api.address tcp://0.0.0.0:1317 --rpc.laddr tcp://0.0.0.0:26657 --trace
