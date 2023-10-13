@@ -6,7 +6,7 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	_ "github.com/cosmos/cosmos-sdk/types/query"
+	query "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/cosmos/gogoproto/grpc"
 	proto "github.com/cosmos/gogoproto/proto"
@@ -281,6 +281,190 @@ func (m *QueryCurrentPendingContractResponse) GetId() uint64 {
 	return 0
 }
 
+type QueryGetVerifiedMetaDataRequest struct {
+	CodeId uint64 `protobuf:"varint,1,opt,name=codeId,proto3" json:"codeId,omitempty"`
+}
+
+func (m *QueryGetVerifiedMetaDataRequest) Reset()         { *m = QueryGetVerifiedMetaDataRequest{} }
+func (m *QueryGetVerifiedMetaDataRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetVerifiedMetaDataRequest) ProtoMessage()    {}
+func (*QueryGetVerifiedMetaDataRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1619b52dd49aed89, []int{6}
+}
+func (m *QueryGetVerifiedMetaDataRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetVerifiedMetaDataRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetVerifiedMetaDataRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetVerifiedMetaDataRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetVerifiedMetaDataRequest.Merge(m, src)
+}
+func (m *QueryGetVerifiedMetaDataRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetVerifiedMetaDataRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetVerifiedMetaDataRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetVerifiedMetaDataRequest proto.InternalMessageInfo
+
+func (m *QueryGetVerifiedMetaDataRequest) GetCodeId() uint64 {
+	if m != nil {
+		return m.CodeId
+	}
+	return 0
+}
+
+type QueryGetVerifiedMetaDataResponse struct {
+	VerifiedMetaData VerifiedMetaData `protobuf:"bytes,1,opt,name=verifiedMetaData,proto3" json:"verifiedMetaData"`
+}
+
+func (m *QueryGetVerifiedMetaDataResponse) Reset()         { *m = QueryGetVerifiedMetaDataResponse{} }
+func (m *QueryGetVerifiedMetaDataResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetVerifiedMetaDataResponse) ProtoMessage()    {}
+func (*QueryGetVerifiedMetaDataResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1619b52dd49aed89, []int{7}
+}
+func (m *QueryGetVerifiedMetaDataResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetVerifiedMetaDataResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetVerifiedMetaDataResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetVerifiedMetaDataResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetVerifiedMetaDataResponse.Merge(m, src)
+}
+func (m *QueryGetVerifiedMetaDataResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetVerifiedMetaDataResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetVerifiedMetaDataResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetVerifiedMetaDataResponse proto.InternalMessageInfo
+
+func (m *QueryGetVerifiedMetaDataResponse) GetVerifiedMetaData() VerifiedMetaData {
+	if m != nil {
+		return m.VerifiedMetaData
+	}
+	return VerifiedMetaData{}
+}
+
+type QueryAllVerifiedMetaDataRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllVerifiedMetaDataRequest) Reset()         { *m = QueryAllVerifiedMetaDataRequest{} }
+func (m *QueryAllVerifiedMetaDataRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllVerifiedMetaDataRequest) ProtoMessage()    {}
+func (*QueryAllVerifiedMetaDataRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1619b52dd49aed89, []int{8}
+}
+func (m *QueryAllVerifiedMetaDataRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllVerifiedMetaDataRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllVerifiedMetaDataRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllVerifiedMetaDataRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllVerifiedMetaDataRequest.Merge(m, src)
+}
+func (m *QueryAllVerifiedMetaDataRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllVerifiedMetaDataRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllVerifiedMetaDataRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllVerifiedMetaDataRequest proto.InternalMessageInfo
+
+func (m *QueryAllVerifiedMetaDataRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllVerifiedMetaDataResponse struct {
+	VerifiedMetaData []VerifiedMetaData  `protobuf:"bytes,1,rep,name=verifiedMetaData,proto3" json:"verifiedMetaData"`
+	Pagination       *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllVerifiedMetaDataResponse) Reset()         { *m = QueryAllVerifiedMetaDataResponse{} }
+func (m *QueryAllVerifiedMetaDataResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllVerifiedMetaDataResponse) ProtoMessage()    {}
+func (*QueryAllVerifiedMetaDataResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1619b52dd49aed89, []int{9}
+}
+func (m *QueryAllVerifiedMetaDataResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllVerifiedMetaDataResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllVerifiedMetaDataResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllVerifiedMetaDataResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllVerifiedMetaDataResponse.Merge(m, src)
+}
+func (m *QueryAllVerifiedMetaDataResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllVerifiedMetaDataResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllVerifiedMetaDataResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllVerifiedMetaDataResponse proto.InternalMessageInfo
+
+func (m *QueryAllVerifiedMetaDataResponse) GetVerifiedMetaData() []VerifiedMetaData {
+	if m != nil {
+		return m.VerifiedMetaData
+	}
+	return nil
+}
+
+func (m *QueryAllVerifiedMetaDataResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "verifier.verifier.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "verifier.verifier.QueryParamsResponse")
@@ -288,41 +472,57 @@ func init() {
 	proto.RegisterType((*QueryContractInfoResponse)(nil), "verifier.verifier.QueryContractInfoResponse")
 	proto.RegisterType((*QueryCurrentPendingContractRequest)(nil), "verifier.verifier.QueryCurrentPendingContractRequest")
 	proto.RegisterType((*QueryCurrentPendingContractResponse)(nil), "verifier.verifier.QueryCurrentPendingContractResponse")
+	proto.RegisterType((*QueryGetVerifiedMetaDataRequest)(nil), "verifier.verifier.QueryGetVerifiedMetaDataRequest")
+	proto.RegisterType((*QueryGetVerifiedMetaDataResponse)(nil), "verifier.verifier.QueryGetVerifiedMetaDataResponse")
+	proto.RegisterType((*QueryAllVerifiedMetaDataRequest)(nil), "verifier.verifier.QueryAllVerifiedMetaDataRequest")
+	proto.RegisterType((*QueryAllVerifiedMetaDataResponse)(nil), "verifier.verifier.QueryAllVerifiedMetaDataResponse")
 }
 
 func init() { proto.RegisterFile("verifier/verifier/query.proto", fileDescriptor_1619b52dd49aed89) }
 
 var fileDescriptor_1619b52dd49aed89 = []byte{
-	// 454 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0xc1, 0x8e, 0x12, 0x31,
-	0x18, 0xc7, 0x67, 0x70, 0xe5, 0x50, 0x37, 0x26, 0xd6, 0x8d, 0xd9, 0x19, 0x75, 0x56, 0x47, 0x51,
-	0xb3, 0xeb, 0x4e, 0x03, 0x04, 0xbd, 0xc3, 0xc9, 0x8b, 0x41, 0x8e, 0x5e, 0xb0, 0x30, 0x65, 0xd2,
-	0x44, 0xda, 0xa1, 0x2d, 0x44, 0x34, 0x5e, 0x7c, 0x02, 0x13, 0x2f, 0x3e, 0x8c, 0x0f, 0xc0, 0x91,
-	0xc4, 0x8b, 0x17, 0x8d, 0x01, 0x1f, 0xc4, 0xd0, 0x76, 0x50, 0x9c, 0x01, 0xdc, 0x5b, 0x33, 0xdf,
-	0xff, 0xff, 0xfd, 0x7f, 0xdf, 0xd7, 0x0e, 0xb8, 0x3d, 0x21, 0x82, 0x0e, 0x28, 0x11, 0x68, 0x7d,
-	0x18, 0x8d, 0x89, 0x98, 0x46, 0xa9, 0xe0, 0x8a, 0xc3, 0x6b, 0xd9, 0xd7, 0x28, 0x3b, 0xf8, 0x47,
-	0x09, 0x4f, 0xb8, 0xae, 0xa2, 0xd5, 0xc9, 0x08, 0xfd, 0x5b, 0x09, 0xe7, 0xc9, 0x6b, 0x82, 0x70,
-	0x4a, 0x11, 0x66, 0x8c, 0x2b, 0xac, 0x28, 0x67, 0xd2, 0x56, 0x4f, 0xfb, 0x5c, 0x0e, 0xb9, 0x44,
-	0x3d, 0x2c, 0x89, 0xe9, 0x8f, 0x26, 0xd5, 0x1e, 0x51, 0xb8, 0x8a, 0x52, 0x9c, 0x50, 0xa6, 0xc5,
-	0x56, 0x1b, 0xe4, 0x89, 0x52, 0x2c, 0xf0, 0x30, 0xeb, 0x55, 0xc9, 0xd7, 0xfb, 0x9c, 0x29, 0x81,
-	0xfb, 0xaa, 0x4b, 0xd9, 0xc0, 0x02, 0x85, 0x47, 0x00, 0xbe, 0x58, 0x05, 0xb5, 0xb5, 0xb7, 0x43,
-	0x46, 0x63, 0x22, 0x55, 0xf8, 0x1c, 0x5c, 0xdf, 0xf8, 0x2a, 0x53, 0xce, 0x24, 0x81, 0x4f, 0x41,
-	0xd9, 0x64, 0x1c, 0xbb, 0x77, 0xdc, 0x47, 0x57, 0x6a, 0x5e, 0x94, 0x9b, 0x3b, 0x32, 0x96, 0xe6,
-	0xc1, 0xec, 0xc7, 0x89, 0xd3, 0xb1, 0xf2, 0xf0, 0x14, 0x1c, 0xeb, 0x7e, 0x2d, 0x4b, 0xf0, 0x8c,
-	0x0d, 0xb8, 0xcd, 0x82, 0x57, 0x41, 0x89, 0xc6, 0xba, 0xe1, 0x41, 0xa7, 0x44, 0xe3, 0xf0, 0x15,
-	0xf0, 0x0a, 0xb4, 0x96, 0xa0, 0x05, 0x0e, 0xb3, 0x29, 0x56, 0x43, 0x58, 0x8e, 0x93, 0x02, 0x8e,
-	0x0d, 0xfb, 0x86, 0x29, 0xbc, 0x0f, 0x42, 0x93, 0x30, 0x16, 0x82, 0x30, 0xd5, 0x26, 0x2c, 0xa6,
-	0x2c, 0xc9, 0x0c, 0xd9, 0x0e, 0x1a, 0xe0, 0xde, 0x4e, 0x95, 0x25, 0xfa, 0x07, 0xbf, 0xf6, 0xfd,
-	0x12, 0xb8, 0xac, 0x7d, 0xf0, 0x2d, 0x28, 0x9b, 0x65, 0xc0, 0x4a, 0x01, 0x5f, 0x7e, 0xeb, 0xfe,
-	0x83, 0x7d, 0x32, 0x13, 0x19, 0xde, 0xfd, 0xf0, 0xf5, 0xd7, 0xa7, 0xd2, 0x4d, 0xe8, 0xa1, 0x6d,
-	0x6f, 0x00, 0x7e, 0x76, 0xc1, 0xe1, 0xdf, 0x1b, 0x80, 0x67, 0xdb, 0x7a, 0x17, 0x5c, 0x89, 0xff,
-	0xf8, 0xff, 0xc4, 0x16, 0xe7, 0x5c, 0xe3, 0x3c, 0x84, 0x15, 0xb4, 0xe7, 0xc9, 0xa1, 0x77, 0x34,
-	0x7e, 0x0f, 0xbf, 0xb8, 0xe0, 0x46, 0xf1, 0x4e, 0x61, 0x63, 0x6b, 0xee, 0xae, 0x9b, 0xf2, 0x9f,
-	0x5c, 0xd4, 0x66, 0xc1, 0xeb, 0x1a, 0xfc, 0x1c, 0x9e, 0x15, 0x81, 0x1b, 0x6b, 0x37, 0x35, 0xde,
-	0x6e, 0x36, 0x48, 0xb3, 0x3e, 0x5b, 0x04, 0xee, 0x7c, 0x11, 0xb8, 0x3f, 0x17, 0x81, 0xfb, 0x71,
-	0x19, 0x38, 0xf3, 0x65, 0xe0, 0x7c, 0x5b, 0x06, 0xce, 0x4b, 0x6f, 0x6d, 0x7e, 0xf3, 0xa7, 0x8f,
-	0x9a, 0xa6, 0x44, 0xf6, 0xca, 0xfa, 0x67, 0xab, 0xff, 0x0e, 0x00, 0x00, 0xff, 0xff, 0x69, 0x94,
-	0x73, 0xb2, 0x47, 0x04, 0x00, 0x00,
+	// 650 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x95, 0x41, 0x4f, 0x13, 0x41,
+	0x14, 0xc7, 0xbb, 0x15, 0x7b, 0x18, 0x89, 0xc1, 0x81, 0x10, 0xba, 0xea, 0x82, 0x8b, 0x80, 0x01,
+	0xd9, 0x91, 0x36, 0x60, 0x3c, 0x02, 0x46, 0xc2, 0x41, 0x53, 0x9b, 0xe8, 0xc1, 0x4b, 0x9d, 0x76,
+	0xa7, 0x9b, 0x4d, 0xda, 0x9d, 0x65, 0x77, 0xda, 0x58, 0x09, 0x17, 0x3f, 0x81, 0x89, 0x17, 0xbf,
+	0x84, 0x27, 0xaf, 0x9e, 0xf4, 0xc2, 0x91, 0xc4, 0x8b, 0x27, 0x63, 0x5a, 0x3f, 0x88, 0xe9, 0xcc,
+	0x5b, 0x68, 0xbb, 0xbb, 0x2d, 0xc4, 0xdb, 0xb0, 0xf3, 0xfe, 0xef, 0xfd, 0xfe, 0x8f, 0xf7, 0xa6,
+	0xe8, 0x6e, 0x9b, 0x05, 0x6e, 0xdd, 0x65, 0x01, 0x39, 0x3f, 0x1c, 0xb5, 0x58, 0xd0, 0xb1, 0xfc,
+	0x80, 0x0b, 0x8e, 0x6f, 0x45, 0x5f, 0xad, 0xe8, 0xa0, 0xcf, 0x39, 0xdc, 0xe1, 0xf2, 0x96, 0xf4,
+	0x4f, 0x2a, 0x50, 0xbf, 0xe3, 0x70, 0xee, 0x34, 0x18, 0xa1, 0xbe, 0x4b, 0xa8, 0xe7, 0x71, 0x41,
+	0x85, 0xcb, 0xbd, 0x10, 0x6e, 0xd7, 0x6b, 0x3c, 0x6c, 0xf2, 0x90, 0x54, 0x69, 0xc8, 0x54, 0x7e,
+	0xd2, 0xde, 0xaa, 0x32, 0x41, 0xb7, 0x88, 0x4f, 0x1d, 0xd7, 0x93, 0xc1, 0x10, 0x6b, 0xc4, 0x89,
+	0x7c, 0x1a, 0xd0, 0x66, 0x94, 0x6b, 0x25, 0x7e, 0x5f, 0xe3, 0x9e, 0x08, 0x68, 0x4d, 0x54, 0x5c,
+	0xaf, 0x1e, 0x01, 0xad, 0xc7, 0xc3, 0xe0, 0x60, 0x57, 0x9a, 0x4c, 0xd0, 0x8a, 0x4d, 0x05, 0x55,
+	0xb1, 0xe6, 0x1c, 0xc2, 0x2f, 0xfb, 0x50, 0x25, 0x59, 0xa7, 0xcc, 0x8e, 0x5a, 0x2c, 0x14, 0xe6,
+	0x0b, 0x34, 0x3b, 0xf4, 0x35, 0xf4, 0xb9, 0x17, 0x32, 0xfc, 0x18, 0xe5, 0x14, 0xcf, 0x82, 0xb6,
+	0xa4, 0x3d, 0xb8, 0x51, 0xc8, 0x5b, 0xb1, 0x1e, 0x59, 0x4a, 0xb2, 0x37, 0x75, 0xfa, 0x7b, 0x31,
+	0x53, 0x86, 0x70, 0x73, 0x1d, 0x2d, 0xc8, 0x7c, 0xfb, 0x40, 0x7b, 0xe8, 0xd5, 0x39, 0xd4, 0xc2,
+	0x37, 0x51, 0xd6, 0xb5, 0x65, 0xc2, 0xa9, 0x72, 0xd6, 0xb5, 0xcd, 0xb7, 0x28, 0x9f, 0x10, 0x0b,
+	0x04, 0xfb, 0x68, 0x3a, 0x72, 0xdc, 0x37, 0x0c, 0x1c, 0x8b, 0x09, 0x1c, 0x43, 0xf2, 0x21, 0x91,
+	0x79, 0x1f, 0x99, 0xaa, 0x42, 0x2b, 0x08, 0x98, 0x27, 0x4a, 0xcc, 0xb3, 0x5d, 0xcf, 0x89, 0x04,
+	0x51, 0x0f, 0xb6, 0xd1, 0xf2, 0xd8, 0x28, 0x20, 0x1a, 0xc5, 0x7f, 0x82, 0x16, 0xa5, 0xec, 0x80,
+	0x89, 0xd7, 0xd0, 0xf4, 0xe7, 0x4c, 0xd0, 0xa7, 0x54, 0xd0, 0xc8, 0xf1, 0x3c, 0xca, 0xd5, 0xb8,
+	0xcd, 0x0e, 0x23, 0x19, 0xfc, 0x65, 0x76, 0xd0, 0x52, 0xba, 0x14, 0xca, 0xbd, 0x42, 0x33, 0xed,
+	0x91, 0x3b, 0x68, 0xc2, 0x72, 0x42, 0x13, 0x46, 0xd3, 0xc0, 0xbf, 0x25, 0x96, 0xc2, 0x74, 0x81,
+	0x7a, 0xb7, 0xd1, 0x48, 0xa3, 0x7e, 0x86, 0xd0, 0xc5, 0xc0, 0x42, 0xcd, 0x55, 0x4b, 0x4d, 0xb7,
+	0xd5, 0x9f, 0x6e, 0x4b, 0x6d, 0x0f, 0x4c, 0xb7, 0x55, 0xa2, 0x0e, 0x03, 0x6d, 0x79, 0x40, 0x69,
+	0x7e, 0xd7, 0xc0, 0x66, 0x62, 0xad, 0xb1, 0x36, 0xaf, 0xfd, 0xa7, 0x4d, 0x7c, 0x30, 0xe4, 0x21,
+	0x2b, 0x3d, 0xac, 0x4d, 0xf4, 0xa0, 0x98, 0x06, 0x4d, 0x14, 0x7e, 0xe4, 0xd0, 0x75, 0x69, 0x02,
+	0xbf, 0x47, 0x39, 0x35, 0xf2, 0x78, 0x25, 0x81, 0x2c, 0xbe, 0x5b, 0xfa, 0xea, 0xa4, 0x30, 0x55,
+	0xce, 0xbc, 0xf7, 0xe1, 0xe7, 0xdf, 0x4f, 0xd9, 0xdb, 0x38, 0x4f, 0xd2, 0x5e, 0x05, 0xfc, 0x59,
+	0x43, 0xd3, 0x83, 0x73, 0x8e, 0x37, 0xd2, 0x72, 0x27, 0x2c, 0x9e, 0xfe, 0xf0, 0x72, 0xc1, 0x80,
+	0xb3, 0x29, 0x71, 0xd6, 0xf0, 0x0a, 0x99, 0xf0, 0x08, 0x91, 0x63, 0xd7, 0x3e, 0xc1, 0xdf, 0x34,
+	0x34, 0x9f, 0xbc, 0x39, 0x78, 0x3b, 0xb5, 0xee, 0xb8, 0x7d, 0xd4, 0x77, 0xae, 0x2a, 0x03, 0xf0,
+	0xa2, 0x04, 0xdf, 0xc4, 0x1b, 0x49, 0xe0, 0x4a, 0x5a, 0xf1, 0x95, 0xb6, 0x12, 0x19, 0xc1, 0x5f,
+	0x35, 0x34, 0x33, 0x3a, 0x55, 0xb8, 0x90, 0x46, 0x90, 0xbe, 0xeb, 0x7a, 0xf1, 0x4a, 0x1a, 0x40,
+	0xde, 0x91, 0xc8, 0x8f, 0xb0, 0x45, 0x2e, 0xf3, 0x92, 0x93, 0x63, 0xf5, 0x7e, 0x9c, 0xe0, 0x2f,
+	0x1a, 0x9a, 0x1d, 0x4d, 0xba, 0xdb, 0x68, 0xa4, 0x83, 0xa7, 0xaf, 0x7b, 0x3a, 0xf8, 0x98, 0xb5,
+	0x1d, 0x3b, 0x24, 0x71, 0xf0, 0xbd, 0xe2, 0x69, 0xd7, 0xd0, 0xce, 0xba, 0x86, 0xf6, 0xa7, 0x6b,
+	0x68, 0x1f, 0x7b, 0x46, 0xe6, 0xac, 0x67, 0x64, 0x7e, 0xf5, 0x8c, 0xcc, 0x9b, 0xfc, 0xb9, 0xec,
+	0xdd, 0x45, 0x06, 0xd1, 0xf1, 0x59, 0x58, 0xcd, 0xc9, 0x1f, 0xae, 0xe2, 0xbf, 0x00, 0x00, 0x00,
+	0xff, 0xff, 0x5e, 0xe2, 0xf8, 0x60, 0xbf, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -343,6 +543,9 @@ type QueryClient interface {
 	ContractInfo(ctx context.Context, in *QueryContractInfoRequest, opts ...grpc.CallOption) (*QueryContractInfoResponse, error)
 	// Queries a list of CurrentPendingContract items.
 	CurrentPendingContract(ctx context.Context, in *QueryCurrentPendingContractRequest, opts ...grpc.CallOption) (*QueryCurrentPendingContractResponse, error)
+	// Queries a list of VerifiedMetaData items.
+	VerifiedMetaData(ctx context.Context, in *QueryGetVerifiedMetaDataRequest, opts ...grpc.CallOption) (*QueryGetVerifiedMetaDataResponse, error)
+	VerifiedMetaDataAll(ctx context.Context, in *QueryAllVerifiedMetaDataRequest, opts ...grpc.CallOption) (*QueryAllVerifiedMetaDataResponse, error)
 }
 
 type queryClient struct {
@@ -380,6 +583,24 @@ func (c *queryClient) CurrentPendingContract(ctx context.Context, in *QueryCurre
 	return out, nil
 }
 
+func (c *queryClient) VerifiedMetaData(ctx context.Context, in *QueryGetVerifiedMetaDataRequest, opts ...grpc.CallOption) (*QueryGetVerifiedMetaDataResponse, error) {
+	out := new(QueryGetVerifiedMetaDataResponse)
+	err := c.cc.Invoke(ctx, "/verifier.verifier.Query/VerifiedMetaData", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) VerifiedMetaDataAll(ctx context.Context, in *QueryAllVerifiedMetaDataRequest, opts ...grpc.CallOption) (*QueryAllVerifiedMetaDataResponse, error) {
+	out := new(QueryAllVerifiedMetaDataResponse)
+	err := c.cc.Invoke(ctx, "/verifier.verifier.Query/VerifiedMetaDataAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -388,6 +609,9 @@ type QueryServer interface {
 	ContractInfo(context.Context, *QueryContractInfoRequest) (*QueryContractInfoResponse, error)
 	// Queries a list of CurrentPendingContract items.
 	CurrentPendingContract(context.Context, *QueryCurrentPendingContractRequest) (*QueryCurrentPendingContractResponse, error)
+	// Queries a list of VerifiedMetaData items.
+	VerifiedMetaData(context.Context, *QueryGetVerifiedMetaDataRequest) (*QueryGetVerifiedMetaDataResponse, error)
+	VerifiedMetaDataAll(context.Context, *QueryAllVerifiedMetaDataRequest) (*QueryAllVerifiedMetaDataResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -402,6 +626,12 @@ func (*UnimplementedQueryServer) ContractInfo(ctx context.Context, req *QueryCon
 }
 func (*UnimplementedQueryServer) CurrentPendingContract(ctx context.Context, req *QueryCurrentPendingContractRequest) (*QueryCurrentPendingContractResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CurrentPendingContract not implemented")
+}
+func (*UnimplementedQueryServer) VerifiedMetaData(ctx context.Context, req *QueryGetVerifiedMetaDataRequest) (*QueryGetVerifiedMetaDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifiedMetaData not implemented")
+}
+func (*UnimplementedQueryServer) VerifiedMetaDataAll(ctx context.Context, req *QueryAllVerifiedMetaDataRequest) (*QueryAllVerifiedMetaDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifiedMetaDataAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -462,6 +692,42 @@ func _Query_CurrentPendingContract_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_VerifiedMetaData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetVerifiedMetaDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VerifiedMetaData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/verifier.verifier.Query/VerifiedMetaData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VerifiedMetaData(ctx, req.(*QueryGetVerifiedMetaDataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_VerifiedMetaDataAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllVerifiedMetaDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VerifiedMetaDataAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/verifier.verifier.Query/VerifiedMetaDataAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VerifiedMetaDataAll(ctx, req.(*QueryAllVerifiedMetaDataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "verifier.verifier.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -477,6 +743,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CurrentPendingContract",
 			Handler:    _Query_CurrentPendingContract_Handler,
+		},
+		{
+			MethodName: "VerifiedMetaData",
+			Handler:    _Query_VerifiedMetaData_Handler,
+		},
+		{
+			MethodName: "VerifiedMetaDataAll",
+			Handler:    _Query_VerifiedMetaDataAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -653,6 +927,151 @@ func (m *QueryCurrentPendingContractResponse) MarshalToSizedBuffer(dAtA []byte) 
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetVerifiedMetaDataRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetVerifiedMetaDataRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetVerifiedMetaDataRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.CodeId != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.CodeId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetVerifiedMetaDataResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetVerifiedMetaDataResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetVerifiedMetaDataResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.VerifiedMetaData.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllVerifiedMetaDataRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllVerifiedMetaDataRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllVerifiedMetaDataRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllVerifiedMetaDataResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllVerifiedMetaDataResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllVerifiedMetaDataResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.VerifiedMetaData) > 0 {
+		for iNdEx := len(m.VerifiedMetaData) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.VerifiedMetaData[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -726,6 +1145,61 @@ func (m *QueryCurrentPendingContractResponse) Size() (n int) {
 	_ = l
 	if m.Id != 0 {
 		n += 1 + sovQuery(uint64(m.Id))
+	}
+	return n
+}
+
+func (m *QueryGetVerifiedMetaDataRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.CodeId != 0 {
+		n += 1 + sovQuery(uint64(m.CodeId))
+	}
+	return n
+}
+
+func (m *QueryGetVerifiedMetaDataResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.VerifiedMetaData.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllVerifiedMetaDataRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllVerifiedMetaDataResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.VerifiedMetaData) > 0 {
+		for _, e := range m.VerifiedMetaData {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
@@ -1122,6 +1596,364 @@ func (m *QueryCurrentPendingContractResponse) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetVerifiedMetaDataRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetVerifiedMetaDataRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetVerifiedMetaDataRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CodeId", wireType)
+			}
+			m.CodeId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.CodeId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetVerifiedMetaDataResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetVerifiedMetaDataResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetVerifiedMetaDataResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VerifiedMetaData", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.VerifiedMetaData.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllVerifiedMetaDataRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllVerifiedMetaDataRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllVerifiedMetaDataRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllVerifiedMetaDataResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllVerifiedMetaDataResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllVerifiedMetaDataResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VerifiedMetaData", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.VerifiedMetaData = append(m.VerifiedMetaData, VerifiedMetaData{})
+			if err := m.VerifiedMetaData[len(m.VerifiedMetaData)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
