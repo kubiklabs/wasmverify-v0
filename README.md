@@ -27,6 +27,8 @@ Any Cosmos blockchain that has integrated the wasmd module for smart contracts c
 
 - Now, as previously said, user can make the second transaction, which is final-verification and send the code-id of the on-chain contract that they wants to verify with. Interally wasmverifier module fetches the codehash for this code-id from blockchain and match it with the finalize hash(from the previous step). If both hashes gets matched then this code-id gets mapped with the off-chain code url and stored in the blockchain. User can verify it by quering the blockchain. User will get error while making the transaction if it not matching. -->
 
+![Complete flow diagram](./helpers/flow_diagram.png)
+
 - To initiate the process, a user uploads their smart contract code onto an IPFS node and receives a unique CID/URL for it.
 
 - The operation of the Wasmverifier module unfolds in two key transactions. In the first transaction, the user applies for verification by sending a "apply-verify-application" transaction, providing the CID/URL of the smart contract code uploaded to IPFS. The module internally determines the final verification block where the hash of the off-chain code will be uploaded. During this period, the user waits for the second transaction.
