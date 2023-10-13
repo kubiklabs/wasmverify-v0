@@ -27,7 +27,7 @@ Any Cosmos blockchain that has integrated the wasmd module for smart contracts c
 
 - Now, as previously said, user can make the second transaction, which is final-verification and send the code-id of the on-chain contract that they wants to verify with. Interally wasmverifier module fetches the codehash for this code-id from blockchain and match it with the finalize hash(from the previous step). If both hashes gets matched then this code-id gets mapped with the off-chain code url and stored in the blockchain. User can verify it by quering the blockchain. User will get error while making the transaction if it not matching. -->
 
-![Complete flow diagram](./helpers/verifier_flow_diagram.png)
+![Complete flow diagram](./helpers/images/verifier_flow_diagram.png)
 
 - To initiate the process, a user uploads their smart contract code onto an IPFS node and receives a unique CID/URL for it.
 
@@ -36,6 +36,8 @@ Any Cosmos blockchain that has integrated the wasmd module for smart contracts c
 - While the module has pending verification applications, validators select the current pending application (as there may be multiple applications waiting in a queue), download the code from the IPFS node, compile it, and calculate the hash of the compiled WebAssembly (wasm) file.
 
 - Validators are required to submit the hash they obtained through a two-step process. In the first step, validators calculate a "prevote msg," which combines the hash of the wasm code and a salt (prevotemsg = Hash(codeHash+salt)). This ensures that validators adhere to the process and obtain the code hash. They then execute the "aggregate-codehash-prevote" transaction, sending the prevote msg. This must be completed within the allocated time for the specific application ID.
+
+![Consensus daigram](./helpers/images/consensus_verifier.png)
 
 - In the second step, validators execute another transaction, "aggregate-code-hash vote," in which they send the actual hash of the compiled wasm code. This concludes the validator's role for the current application ID, and they await the next one.
 
