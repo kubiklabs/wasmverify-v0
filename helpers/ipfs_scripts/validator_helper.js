@@ -1,4 +1,4 @@
-import { Web3Storage, getFilesFromPath } from 'web3.storage'
+import { Web3Storage } from 'web3.storage'
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -32,7 +32,7 @@ export async function retrieve(cid) {
     if (!fs.existsSync(downloadDirectory)) {
         fs.mkdirSync(downloadDirectory);
     }
-    console.log("directory created")
+    console.log("Download directory created")
 
     const files = await res?.files();
     console.log("files received from response");
@@ -41,10 +41,16 @@ export async function retrieve(cid) {
         for (const file of files) {
             const destinationPath = path.join(downloadDirectory, file.name);
             // Write the file data to the destination file
-            console.log((await file.text()).length, "the length  of the file")
+            console.log("the length  of the file => ",(await file.text()).length)
 
+            // Create destination directory before downloading the files
+            const destinationDir = path.dirname(destinationPath);
+            if (!fs.existsSync(destinationDir)) {
+                fs.mkdirSync(destinationDir, { recursive: true }); // Create the directory and its parent directories(recursice is true)
+            }
             fs.writeFileSync(destinationPath, await file.text());
-            console.log("File downloaded and stored in the directory")
+            console.log("File downloaded and stored in the directory ",destinationDir)
+
         }
     }
 }
@@ -113,11 +119,10 @@ async function main() {
             
         })
     }
+    // for full contract
+    // await retrieve("bafybeibp3jujpym6y7x6ct4i4oacv5koybpcmpmvxnc3gaprpfqrk2gxgm");
+    // for folder only
+    // await retrieve("bafybeigb75syjdby32lazalszanifqbe4hn4uhewirrwp3vas2qdqlcyfe");
 }
 
 main()
-
-/*
-1. How to check if the files uploaded are in correct pattern for compilation
-2. Require a cargo.toml and cargo.lock file in workspace and contracts in contract folder 
-*/
