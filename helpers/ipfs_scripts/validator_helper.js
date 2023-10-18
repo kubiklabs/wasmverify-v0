@@ -6,8 +6,7 @@ import { exec } from 'child_process'
 import axios from "axios";
 
 function getAccessToken() {
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBCYmFGNTg1ZGVEZUI4YTcwZjE2QjdEZDBFNjE0RTliZjhkMzhEODUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTUzODYxNjc0OTcsIm5hbWUiOiJ2ZXJpZmllclRva2VuIn0.GDAdg-s6ZCLONU9l2p8BBzgi6z-9HGHiPaXN2VVFSVU'
-    //   return process.env.WEB3STORAGE_TOKEN
+    return process.env.WEB3STORAGE_TOKEN
 }
 
 export function makeStorageClient() {

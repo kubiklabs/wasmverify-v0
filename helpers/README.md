@@ -246,9 +246,12 @@ To upload the contract on IPFS, move to  **wasmverify-v0/helpers/ipfs_scripts** 
 // to install all the dependecies
 npm install
 ```
-
-Now in the upload_contract.js file you can see get getAccessToken function which return the web3 storage token. Here you can paste your your own access token key. For testing you can keep it as it is. Now run,
-
+(We are using web3Storage for demo, you can create your account on their [website](https://web3.storage/) and get the acesstoken.)
+Now in the upload_contract.js file you can see get getAccessToken function which return the web3 storage token. Here you can paste your your own access token key. Or you can add your keys in the enviroment variable. To add IpfsAcesstokenKey in your enviroment variable, run -
+```
+export WEB3STORAGE_TOKEN={your_key}
+```
+Now run the below command to upload the contract.
 ```
 node ./upload_contract.js
 ```
@@ -389,41 +392,10 @@ contractinfo:
 
 #### 6. Validators action
 
-<!-- ##### 6.1 Query the current pending contract
-
-Validators keeps on querying for the current pending contract.In case of pending contract they start the action.
-Now you also have the validator key. So you will have to make the prevote and vote msg to the blockchain.
-
-Check for pending contract.Run 
-
-``verifierd q verifier current-pending-contract``
-
-If there is any pending contract, you can see the application id for it.
-Now you can see
-```
-"id" : 1
-```
-
-Query this id to get the information for the application.Run
-
-``verifierd q verifier contract-info 1``
-
-You can see the info like this -
-```
-contractinfo:
-  Id: "1"
-  assignedVerificationBlockHeight: "248"
-  codeId: "0"
-  offchainCodeHash: ""
-  offchainCodeUrl: bafybeifg7wrwmd5sjobcvo4ctzkrse6adq3hfwvdq64bf2ika3ruys4inq
-```
-
-Copy the offchainCodeUrl and  -->
-
 ##### 6.1 Download and compile the contract
 
 Validators run a script which keeps quering for pending application and if it gets any it downlaods and compile the contract.
-
+(you have already added your WEB3STORAGE_TOKEN in the upload steps. validator_helper.js script will get the access key from there)
 To run the script, open a new terminal and move to **wasmverify-v0/helper/ipfs_scripts** directory and run -
 
 ```
