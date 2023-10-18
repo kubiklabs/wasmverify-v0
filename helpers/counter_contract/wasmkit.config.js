@@ -1,4 +1,4 @@
-const cosmos_localnet_accounts = [
+const verifier_localnet_accounts = [
   {
     name: 'alice',
     address: 'veri1pplud7095lpfs0jnqcal3wh059gsd4ufsm5ycd',
@@ -14,10 +14,10 @@ const cosmos_localnet_accounts = [
 // Default list covers most of the supported network
 // Networks which are not required can be removed from here
 const networks = {
-  cosmos_localnet: {
+  verifier_localnet: {
     endpoint: 'http://localhost:26657/',
     chainId: 'verifier',
-    accounts: cosmos_localnet_accounts,
+    accounts: verifier_localnet_accounts,
     fees: {
       upload: {
         amount: [{ amount: "750000", denom: "stake" }],
@@ -37,17 +37,7 @@ const networks = {
 
 module.exports = {
   networks: {
-    default: networks.cosmos_localnet,
-  },
-   
-  localnetworks: {
-    cosmos: {
-      docker_image: "uditgulati0/juno-node",
-      rpc_port: 26657,
-      rest_port: 1317,
-      flags: ["GAS_LIMIT=10000000", "STAKE_TOKEN=token", "TIMEOUT_COMMIT=6s"],
-      docker_command: "./setup_and_run.sh veri1njjftpelthhegcl8x6rppu0req02duguaqle5z",
-    },
+    default: networks.verifier_localnet,
   },
   mocha: {
     timeout: 60000
