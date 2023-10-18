@@ -81,7 +81,7 @@ Now, Upload the compiled wasm to the chain.
 Run the command from the same directory (**wasmverify-v0/helpers/counter_contract**)-
 
 ```
-verifierd tx wasm store /artifacts/contracts/sample_project.wasm --chain-id testing --from alice --gas=60000000
+verifierd tx wasm store /artifacts/contracts/counter_contract.wasm --chain-id testing --from alice --gas=60000000
 ```
 
 You will see something like this in your terminal. It's a prompt to sign the tx.
