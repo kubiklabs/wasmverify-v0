@@ -57,6 +57,7 @@ export async function retrieve(cid) {
 
 function runDockerCommand() {
 
+    // HANDLE MULTI-CONTRACT COMPILATION AFTER POC
     const dockerCommand = `
       docker run --rm -v "$(pwd)"/downloads/counter_contract:/code \
       --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
