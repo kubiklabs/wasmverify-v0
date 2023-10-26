@@ -209,6 +209,11 @@ func (k Keeper) verifyHash(ctx sdk.Context, msg *types.MsgFinalVerification) (st
 
 		// 1. Create a map of codeId to id to store the verified contracts
 		// 2. Create a query which takes codeId and then return the status if verified after checking the contract list
+		verifiedMetaData := types.VerifiedMetaData{
+			CodeId:        msg.CodeId,
+			ApplicationId: ContractInfo.Id,
+		}
+		k.SetVerifiedMetaData(ctx, verifiedMetaData)
 
 		return "Verified", nil
 	} else {

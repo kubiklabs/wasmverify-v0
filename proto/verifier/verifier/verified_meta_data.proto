@@ -1,0 +1,11 @@
+syntax = "proto3";
+package verifier.verifier;
+
+option go_package = "verifier/x/verifier/types";
+
+message VerifiedMetaData {
+  uint64 codeId = 1; 
+  uint64 applicationId = 2; 
+  
+}
+

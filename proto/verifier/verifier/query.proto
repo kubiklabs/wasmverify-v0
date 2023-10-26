@@ -7,6 +7,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "verifier/verifier/params.proto";
 import "verifier/verifier/contract_info.proto";
+import "verifier/verifier/verified_meta_data.proto";
 
 option go_package = "verifier/x/verifier/types";
 
@@ -28,6 +29,16 @@ service Query {
   // Queries a list of CurrentPendingContract items.
   rpc CurrentPendingContract (QueryCurrentPendingContractRequest) returns (QueryCurrentPendingContractResponse) {
     option (google.api.http).get = "/verifier/verifier/current_pending_contract";
+  
+  }
+  
+  // Queries a list of VerifiedMetaData items.
+  rpc VerifiedMetaData    (QueryGetVerifiedMetaDataRequest) returns (QueryGetVerifiedMetaDataResponse) {
+    option (google.api.http).get = "/verifier/verifier/verified_meta_data/{codeId}";
+  
+  }
+  rpc VerifiedMetaDataAll (QueryAllVerifiedMetaDataRequest) returns (QueryAllVerifiedMetaDataResponse) {
+    option (google.api.http).get = "/verifier/verifier/verified_meta_data";
   
   }
 }
@@ -53,5 +64,22 @@ message QueryCurrentPendingContractRequest {}
 
 message QueryCurrentPendingContractResponse {
   uint64 id = 1;
+}
+
+message QueryGetVerifiedMetaDataRequest {
+  uint64 codeId = 1;
+}
+
+message QueryGetVerifiedMetaDataResponse {
+  VerifiedMetaData verifiedMetaData = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVerifiedMetaDataRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVerifiedMetaDataResponse {
+  repeated VerifiedMetaData                       verifiedMetaData = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination       = 2;
 }
 

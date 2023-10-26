@@ -1,12 +1,16 @@
 syntax = "proto3";
+
 package verifier.verifier;
 
 import "gogoproto/gogo.proto";
 import "verifier/verifier/params.proto";
+import "verifier/verifier/verified_meta_data.proto";
 
 option go_package = "verifier/x/verifier/types";
 
 // GenesisState defines the verifier module's genesis state.
 message GenesisState {
-  Params params = 1 [(gogoproto.nullable) = false];
+           Params           params               = 1 [(gogoproto.nullable) = false];
+  repeated VerifiedMetaData verifiedMetaDataList = 2 [(gogoproto.nullable) = false];
 }
+

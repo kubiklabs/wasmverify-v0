@@ -4,3 +4,8 @@ release/
 .idea/
 .vscode/
 .DS_Store
+helpers/ipfs_scripts/node_modules
+helpers/counter_contract/artifacts
+helpers/counter_contract/target
+helpers/counter_contract/node_modules
+helpers/counter_contract/contracts/schema

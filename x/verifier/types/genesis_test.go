@@ -19,12 +19,34 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid:    true,
 		},
 		{
-			desc:     "valid genesis state",
+			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
+				VerifiedMetaDataList: []types.VerifiedMetaData{
+					{
+						CodeId: 0,
+					},
+					{
+						CodeId: 1,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated verifiedMetaData",
+			genState: &types.GenesisState{
+				VerifiedMetaDataList: []types.VerifiedMetaData{
+					{
+						CodeId: 0,
+					},
+					{
+						CodeId: 0,
+					},
+				},
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	}

@@ -34,7 +34,7 @@ var (
 	// This error we will get in GetPrevoteTime for findinng prevote time for any contract info
 	ErrVoteBlockTimeNotFound                = errors.Register(ModuleName, 23, "Vote blocks not found")
 	ErrPreVoteTimePassed                    = errors.Register(ModuleName, 24, "Prevote time passed for this Application Id")
-	ErrVoteTimePassed                       = errors.Register(ModuleName, 25, "Vote time passed for this Application Id")
+	ErrVoteTiming                           = errors.Register(ModuleName, 25, "Either Vote time has passed or voting time not started yet for this Application Id")
 	ErrNoPendingContractfound               = errors.Register(ModuleName, 26, "No pending contract to verify")
 	ErrVerificationBlockNotReachedYet       = errors.Register(ModuleName, 27, "Verification is going on, verifiy again when block height reached assigned verification height")
 	ValidationBlockPassedWithoutHashUpdate  = errors.Register(ModuleName, 28, "Verificationblock passed but hash was not updated by validators, Code Error")
