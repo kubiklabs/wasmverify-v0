@@ -40,6 +40,9 @@ func EndBlocker(ctx sdk.Context, k keeper.Keeper) error {
 		currentPendingContractInfo.OffchainCodeHash = finalizeHashForthisApplicationId
 
 		k.SetContractInfo(ctx, currentPendingContractInfo)
+
+		// TODO: reduce the TotalPendingContract count here
+		// Check logic
 	}
 
 	return nil
